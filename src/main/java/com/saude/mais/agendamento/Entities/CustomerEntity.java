@@ -31,6 +31,9 @@ public class CustomerEntity implements Serializable {
     @OneToMany(mappedBy = "customer")
     List<EmergencyContactsEntity> emergencyContacts;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer")
+    List<AppointmentEntity> appointments = new ArrayList<>();
 
 
 
