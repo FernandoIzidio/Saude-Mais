@@ -60,7 +60,13 @@ public class AppointmentEntity implements Serializable {
     private String diagnostic;
 
 
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "appointment")
+    private List<ProceduresEntity> procedures = new ArrayList<>();
 
+    @Setter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "appointment")
+    private List<MedicationEntity> medications = new ArrayList<>();
 
     @Setter(AccessLevel.NONE)
     @ManyToOne
