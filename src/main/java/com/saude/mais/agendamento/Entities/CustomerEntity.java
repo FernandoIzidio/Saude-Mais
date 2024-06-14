@@ -6,20 +6,26 @@ import java.util.Set;
 @Entity
 @Table(name = "customers")
 public class CustomerEntity {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @Column(name = "firt_name")
-        private String firstName;
-        @Column(name = "last_name")
-        private String lastName;
+    @Column(name = "firt_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
 
-        private Short age;
-        private String gender;
+    private Short age;
+    private String gender;
 
+    @ManyToMany
+    @JoinTable(
+            name = "customer_address",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private Set<AddressEntity> address;
 
-        public CustomerEntity() {}
+    public CustomerEntity() {}
 
     public CustomerEntity(String firstName, String lastName, Short age, String gender) {
         this.firstName = firstName;
