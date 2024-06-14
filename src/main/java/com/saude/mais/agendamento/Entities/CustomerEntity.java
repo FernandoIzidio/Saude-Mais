@@ -1,11 +1,13 @@
 package com.saude.mais.agendamento.Entities;
 import jakarta.persistence.*;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
-public class CustomerEntity {
+public class CustomerEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +25,7 @@ public class CustomerEntity {
             name = "customer_address",
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private Set<AddressEntity> address;
+    private List<AddressEntity> address;
 
     public CustomerEntity() {}
 
@@ -54,6 +56,10 @@ public class CustomerEntity {
         return gender;
     }
 
+    public List<AddressEntity> getAddress() {
+        return address;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -68,5 +74,18 @@ public class CustomerEntity {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomerEntity that = (CustomerEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
