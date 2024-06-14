@@ -18,6 +18,8 @@ public class AddressEntity implements Serializable {
     private String zip;
     private String country;
 
+    @ManyToMany(mappedBy = "address")
+    private Set<CustomerEntity> customers;
 
     public AddressEntity() {}
 
