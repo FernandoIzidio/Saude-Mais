@@ -1,16 +1,15 @@
 package com.saude.mais.agendamento.Controllers;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class HomeController {
 
     @GetMapping
-    public ResponseEntity HomeController() {
-        return ResponseEntity.ok().body("Hello World2");
+    public String getTemplate(Model model) {
+        return "index";
     }
 }
