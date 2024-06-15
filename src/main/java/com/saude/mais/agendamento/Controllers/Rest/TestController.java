@@ -1,6 +1,6 @@
-package com.saude.mais.agendamento.Controllers;
+package com.saude.mais.agendamento.Controllers.Rest;
 
-import com.saude.mais.agendamento.Entities.UserEntity;
+import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
