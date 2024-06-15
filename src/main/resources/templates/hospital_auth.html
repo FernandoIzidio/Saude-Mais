@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:fragment="content">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Hospital e Usuário Admin</title>
+</head>
+<body>
+<main>
+    <header>
+        <nav th:replace="fragments/navbar.html :: navbar">
+        </nav>
+    </header>
+
+    <main>
+        <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
+
+        <form th:action="@{/register/hospital}" th:object="${hospitalForm}" method="post">
+            <fieldset>
+                <legend>Informações do Hospital</legend>
+                <label for="hospitalName">Nome do Hospital:</label>
+                <input type="text" th:field="*{hospitalEntityDto.name}" id="hospitalName" name="hospitalName" required><br><br>
+
+                <label for="cnpj">CNPJ:</label>
+                <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="cnpj" required><br><br>
+
+                <fieldset>
+                    <legend>Endereço do Hospital</legend>
+                    <label for="hospitalStreet">Rua:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalStreet" required><br><br>
+
+                    <label for="hospitalCity">Cidade:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.address.city}" id="hospitalCity" name="hospitalCity" required><br><br>
+
+                    <label for="hospitalState">Estado:</label>
+                    <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalState">
+                        <option value="">-- Selecione --</option>
+                    </select><br><br>
+
+                    <label for="hospitalZip">CEP:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalZip" required><br><br>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Contato do Hospital</legend>
+                    <label for="hospitalPrimaryPhone">Telefone Principal:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.primaryPhone}" id="hospitalPrimaryPhone" name="hospitalPrimaryPhone" required><br><br>
+
+                    <label for="hospitalSecondaryPhone">Telefone Secundário:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.secondaryPhone}" id="hospitalSecondaryPhone" name="hospitalSecondaryPhone"><br><br>
+
+                    <label for="hospitalEmail">Email:</label>
+                    <input type="email" th:field="*{hospitalEntityDto.email}" id="hospitalEmail" name="hospitalEmail" required><br><br>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Detalhes Hospitalares</legend>
+                    <label for="bedCapacity">Capacidade de Leitos:</label>
+                    <input type="number" th:field="*{hospitalEntityDto.bedCapacity}" id="bedCapacity" name="bedCapacity" required><br><br>
+
+                    <label for="employeeCount">Número de Funcionários:</label>
+                    <input type="number" th:field="*{hospitalEntityDto.employeeCount}" id="employeeCount" name="employeeCount" required><br><br>
+
+                    <label for="doctorCount">Número de Médicos:</label>
+                    <input type="number" th:field="*{hospitalEntityDto.doctorCount}" id="doctorCount" name="doctorCount" required><br><br>
+
+                    <label for="sanitaryLicenseNumber">Número da Licença Sanitária:</label>
+                    <input type="text" th:field="*{hospitalEntityDto.sanitaryLicenseNumber}" id="sanitaryLicenseNumber" name="sanitaryLicenseNumber" required><br><br>
+
+                    <label for="licenseExpirationDate">Data de Expiração da Licença:</label>
+                    <input type="date" th:field="*{hospitalEntityDto.licenseExpirationDate}" id="licenseExpirationDate" name="licenseExpirationDate" required><br><br>
+                </fieldset>
+            </fieldset>
+
+            <fieldset>
+                <legend>Informações do Usuário Admin</legend>
+                <label for="adminFirstName">Primeiro Nome:</label>
+                <input type="text" th:field="*{userEntityDto.firstName}" id="adminFirstName" name="adminFirstName" required><br><br>
+
+                <label for="adminLastName">Sobrenome:</label>
+                <input type="text" th:field="*{userEntityDto.lastName}" id="adminLastName" name="adminLastName" required><br><br>
+
+                <label for="adminUsername">Nome de Usuário:</label>
+                <input type="text" th:field="*{userEntityDto.username}" id="adminUsername" name="adminUsername" required><br><br>
+
+                <label for="adminPassword">Senha:</label>
+                <input type="password" th:field="*{userEntityDto.password}" id="adminPassword" name="adminPassword" required><br><br>
+
+                <label for="adminEmail">Email:</label>
+                <input type="email" th:field="*{userEntityDto.email}" id="adminEmail" name="adminEmail" required><br><br>
+
+                <label for="adminPhone">Telefone:</label>
+                <input type="text" th:field="*{userEntityDto.phone}" id="adminPhone" name="adminPhone" required><br><br>
+
+                <label for="adminCpf">CPF:</label>
+                <input type="text" th:field="*{userEntityDto.cpf}" id="adminCpf" name="adminCpf" required><br><br>
+
+                <label for="adminBirthDate">Data de Nascimento:</label>
+                <input type="date" th:field="*{userEntityDto.birthDate}" id="adminBirthDate" name="adminBirthDate" required><br><br>
+            </fieldset>
+
+            <button type="submit">Salvar</button>
+        </form>
+    </main>
+</main>
+
+<script type="module" th:src="@{/js/hospitalAuth.js}"></script>
+</body>
+</html>
