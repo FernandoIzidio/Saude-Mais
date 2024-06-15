@@ -1,0 +1,17 @@
+body {
+    font-family: 'Arial', sans-serif;
+}
+
+#sidebar-wrapper {
+    width: 250px;
+    height: 100%;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    padding: 20px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}
