@@ -105,7 +105,7 @@ public class UserEntity implements Serializable, UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     @Override
