@@ -7,7 +7,7 @@
 <body>
 <main>
     <header>
-        <nav th:replace="fragments/navbar.html :: navbar">
+        <nav th:replace="fragments/navbar_register.html :: navbar">
         </nav>
     </header>
 
@@ -96,7 +96,11 @@
 
                 <label for="adminBirthDate">Data de Nascimento:</label>
                 <input type="date" th:field="*{userEntityDto.birthDate}" id="adminBirthDate" name="adminBirthDate" required><br><br>
+
+
             </fieldset>
+
+            <input type="hidden" name="adminRole" th:field="*{userEntityDto.role}"  id="adminRole">
 
             <button type="submit">Salvar</button>
         </form>
