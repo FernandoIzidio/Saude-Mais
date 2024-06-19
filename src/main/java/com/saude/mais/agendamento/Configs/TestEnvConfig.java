@@ -8,10 +8,13 @@ import com.saude.mais.agendamento.Entities.User.UserRole;
 import com.saude.mais.agendamento.Repositories.AddressRepository;
 import com.saude.mais.agendamento.Repositories.HospitalRepository;
 import com.saude.mais.agendamento.Repositories.UserRepository;
+import com.saude.mais.agendamento.Services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.*;
@@ -21,14 +24,16 @@ import java.util.*;
 public class TestEnvConfig implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private  HospitalRepository hospitalRepository;
     private  AddressRepository addressRepository;
 
     @Autowired
-    public TestEnvConfig(UserRepository userRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository) {
+    public TestEnvConfig(UserRepository userRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository, UserService userService) {
         this.userRepository = userRepository;
         this.hospitalRepository = hospitalRepository;
         this.addressRepository = addressRepository;
+        this.userService = userService;
     }
 
 
@@ -42,16 +47,33 @@ public class TestEnvConfig implements CommandLineRunner {
         List<AddressEntity> addressEntities = new ArrayList<>();
         List<HospitalEntity> hospitalEntities = new ArrayList<>();
 
+        UserEntity user = null;
         for (int i = 0; i < 10; i++) {
             AddressEntity address = new AddressEntity(faker.address().streetName(), faker.address().city(), faker.address().state(), faker.address().zipCode());
             addressEntities.add(address);
 
-            HospitalEntity hospital = new HospitalEntity(faker.medical().hospitalName(), generateValidCnpj(), address, generateCellPhoneNumber(), generateCellPhoneNumber(), faker.internet().safeEmailAddress(), faker.number().numberBetween(10, 50),  faker.number().numberBetween(10, 25), faker.number().numberBetween(5, 20), String.valueOf(faker.idNumber()),  faker.date().birthday().toInstant());
+            String hospitalName = faker.internet().domainName().trim().replaceAll("\\s+", "").replace(".", "").toLowerCase();
+
+            String domain = "www." + hospitalName + ".saude-mais.com.br";
+
+            HospitalEntity hospital = new HospitalEntity(faker.medical().hospitalName(), generateValidCnpj(), domain, address, generateCellPhoneNumber(), generateCellPhoneNumber(), faker.internet().safeEmailAddress(), String.valueOf(faker.number().numberBetween(10, 50)),  faker.date().birthday().toInstant());
+
+            if (i == 0){
+                System.out.println("Registrou");
+                var bcrypt = new BCryptPasswordEncoder();
+
+                 user = new UserEntity(faker.name().firstName(), faker.name().lastName(), "tulio123", bcrypt.encode("123"), "tulio@email.com", generateCellPhoneNumber(),"11122233355", UserRole.ADMIN, faker.date().birthday().toInstant());
+
+            }
+
+
             hospitalEntities.add(hospital);
         }
 
         addressRepository.saveAll(addressEntities);
         hospitalRepository.saveAll(hospitalEntities);
+        user.getHospitals().add(hospitalEntities.get(0));
+        userRepository.save(user);
     }
 
     public String generateRandomCPF() {
