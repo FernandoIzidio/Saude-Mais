@@ -10,8 +10,7 @@ import java.time.LocalDate;
 /**
  * DTO for {@link HospitalEntity}
  */
-public record HospitalEntityDto(String name, String cnpj, AddressEntityDto address, String primaryPhone,
-                                String secondaryPhone, String email, Integer bedCapacity, Integer employeeCount,
-                                Integer doctorCount, String sanitaryLicenseNumber,
+public record HospitalEntityDto(String name, String cnpj, String domainName, AddressEntityDto  address, String primaryPhone,
+                                String secondaryPhone, String email, String sanitaryLicenseNumber,
                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenseExpirationDate) implements Serializable {
 }
