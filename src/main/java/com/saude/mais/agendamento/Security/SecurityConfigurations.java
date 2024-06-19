@@ -19,33 +19,39 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 public class SecurityConfigurations {
 
-    private final SecurityFilter securityFilter;
-
-    @Autowired
-    public SecurityConfigurations(SecurityFilter securityFilter) {
-        this.securityFilter = securityFilter;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf ->  csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .sessionManagement(session -> {
+                    session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                            .maximumSessions(1)
+                            .maxSessionsPreventsLogin(true)
+                            .expiredUrl("/session-expired");
+                })
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/js/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/css/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/image/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/register/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/register/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers("/register").anonymous()
+                        .requestMatchers("/login").anonymous()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/worker/**").hasAnyRole("ADMIN", "WORKER")
                         .requestMatchers("/customer/**").hasAnyRole("ADMIN", "CUSTOMER")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(customAuthenticationSuccessHandler())
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"))
                 .build();
     }
 
@@ -57,5 +63,10 @@ public class SecurityConfigurations {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
     }
 }
