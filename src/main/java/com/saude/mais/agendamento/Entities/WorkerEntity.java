@@ -26,12 +26,6 @@ public class WorkerEntity implements Serializable {
     Long id;
 
 
-    @Column(name = "first_name", nullable = false)
-    String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    String lastName;
-
     @ManyToMany
     @JoinTable(name = "worker_expertises",
                joinColumns = @JoinColumn(name = "worker_id"),
@@ -62,8 +56,6 @@ public class WorkerEntity implements Serializable {
 
 
     public WorkerEntity(String firstName, String lastName, List<ExpertisesEntity> expertises, List<OfficeHoursEntity> officeHours, UserEntity user) {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.expertises = expertises;
         this.officeHours = officeHours;
         this.user = user;
