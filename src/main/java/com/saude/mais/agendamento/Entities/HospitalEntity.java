@@ -24,8 +24,11 @@ public class HospitalEntity implements Serializable {
     private String name;
 
     @EqualsAndHashCode.Include
-    @Column(nullable = false, length = 14)
+    @Column(nullable = false, length = 14, unique = true)
     private String cnpj;
+
+    @Column(nullable = false, unique = true)
+    private String website;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -44,30 +47,19 @@ public class HospitalEntity implements Serializable {
     private String email;
 
     @Column(nullable = false)
-    private Integer bedCapacity;
-
-    @Column(nullable = false)
-    private Integer employeeCount;
-
-    @Column(nullable = false)
-    private Integer doctorCount;
-
-    @Column(nullable = false)
     private String sanitaryLicenseNumber;
 
     @Column(nullable = false)
     private Instant licenseExpirationDate;
 
-    public HospitalEntity(String name, String cnpj, AddressEntity address, String primaryPhone, String secondaryPhone, String email, Integer bedCapacity, Integer employeeCount, Integer doctorCount, String sanitaryLicenseNumber, Instant licenseExpirationDate) {
+    public HospitalEntity(String name, String cnpj, String website,  AddressEntity address, String primaryPhone, String secondaryPhone, String email, String sanitaryLicenseNumber, Instant licenseExpirationDate) {
         this.name = name;
         this.cnpj = cnpj;
+        this.website = website;
         this.address = address;
         this.primaryPhone = primaryPhone;
         this.secondaryPhone = secondaryPhone;
         this.email = email;
-        this.bedCapacity = bedCapacity;
-        this.employeeCount = employeeCount;
-        this.doctorCount = doctorCount;
         this.sanitaryLicenseNumber = sanitaryLicenseNumber;
         this.licenseExpirationDate = licenseExpirationDate;
     }
