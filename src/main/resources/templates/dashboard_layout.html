@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR" th:fragment="layout">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/dashboard_layout.css}">
+    <title th:fragment="title">Título Padrão</title>
+</head>
+<body>
+<header th:fragment="header">
+    <nav id="sidebar">
+
+        <ul th:fragment="navList" id="navList">
+            <div>
+                <li class="navItem">
+                    <a class="navLink icon" id="mainIcon" href="#">.</a>
+                </li>
+            </div>
+            <div>
+                <li>
+                    <a class="navLink navIcon" href="#">
+                        <span id="homeIcon" class="icon">.</span>
+                        <span>Home</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </nav>
+</header>
+
+<main th:fragment="content">
+    <div id="topNav" class="topNav" th:fragment="topNav">
+        <div id="burgerIcon" class="burgerIcon">
+            ☰
+        </div>
+    </div>
+</main>
+</body>
+</html>

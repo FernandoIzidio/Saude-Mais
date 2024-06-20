@@ -1,0 +1,89 @@
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+
+#sidebar {
+    background-color: #464646;
+    height: 100vh;
+    width: max-content;
+    font-weight: bolder;
+    color: white;
+}
+
+#sidebar[active]{
+    width: 60px;
+    padding: 5px;
+    box-sizing: content-box;
+}
+
+
+#navList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navItem {
+
+}
+
+.navLink, .closeBtn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 50px;
+    height: 20px;
+    padding: 10px;
+
+}
+
+.icon {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    color: transparent;
+}
+
+#mainIcon{
+    background-image: url("/images/saude.png");
+    background-size: cover;
+    width: 36px;
+    height: 36px;
+}
+
+.navIcon {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    height: max-content;
+}
+
+.navIcon > span {
+    font-weight: bold;
+}
+
+#homeIcon {
+    background-image: url("/images/casa.png");
+    background-size: cover;
+    width: 36px;
+    height: 36px;
+}
+
+.burgerIcon {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 10px;
+    color: #312e2e;
+}

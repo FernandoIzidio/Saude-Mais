@@ -7,14 +7,14 @@
 <body>
 <main>
     <header>
-        <nav th:replace="fragments/navbar_register.html :: navbar">
+        <nav th:replace="fragments/navbar_main.html :: navbar">
         </nav>
     </header>
 
-    <main>
+
         <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
 
-        <form th:action="@{/register/hospital}" th:object="${hospitalForm}" method="post">
+        <form th:action="@{/register}" th:object="${hospitalForm}" method="post">
             <fieldset>
                 <legend>Informações do Hospital</legend>
                 <label for="hospitalName">Nome do Hospital:</label>
@@ -22,6 +22,9 @@
 
                 <label for="cnpj">CNPJ:</label>
                 <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="cnpj" required><br><br>
+
+                <label for="domainName">Nome de dominio:</label>
+                <input type="text" th:field="*{hospitalEntityDto.domainName}" id="domainName" name="domainName">
 
                 <fieldset>
                     <legend>Endereço do Hospital</legend>
@@ -54,14 +57,6 @@
 
                 <fieldset>
                     <legend>Detalhes Hospitalares</legend>
-                    <label for="bedCapacity">Capacidade de Leitos:</label>
-                    <input type="number" th:field="*{hospitalEntityDto.bedCapacity}" id="bedCapacity" name="bedCapacity" required><br><br>
-
-                    <label for="employeeCount">Número de Funcionários:</label>
-                    <input type="number" th:field="*{hospitalEntityDto.employeeCount}" id="employeeCount" name="employeeCount" required><br><br>
-
-                    <label for="doctorCount">Número de Médicos:</label>
-                    <input type="number" th:field="*{hospitalEntityDto.doctorCount}" id="doctorCount" name="doctorCount" required><br><br>
 
                     <label for="sanitaryLicenseNumber">Número da Licença Sanitária:</label>
                     <input type="text" th:field="*{hospitalEntityDto.sanitaryLicenseNumber}" id="sanitaryLicenseNumber" name="sanitaryLicenseNumber" required><br><br>
@@ -102,9 +97,8 @@
 
             <input type="hidden" name="adminRole" th:field="*{userEntityDto.role}"  id="adminRole">
 
-            <button type="submit">Salvar</button>
+            <button type="submit">Enviar</button>
         </form>
-    </main>
 </main>
 
 <script type="module" th:src="@{/js/hospitalAuth.js}"></script>
