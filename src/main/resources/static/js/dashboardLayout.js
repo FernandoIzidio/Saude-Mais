@@ -1,25 +1,28 @@
 
 addEventListener("DOMContentLoaded", () =>{
-    let burguerIcon = document.getElementById("burguer-icon")
+    let burguerIcon = document.getElementById("burgerIcon");
     let sidebar = document.getElementById("sidebar");
-    let closeBtn = document.getElementById("close-btn");
-    let dropOption = document.getElementsByClassName("drop-option");
-
+    let navOptions = document.querySelectorAll(".navOption");
 
     burguerIcon.addEventListener("click", () =>{
-        burguerIcon.style.display = "none";
-        sidebar.style.display = "flex"
-        closeBtn.style.display = "flex";
+      sidebar.classList.toggle("active");
     })
 
-    closeBtn.addEventListener("click", () =>{
-        sidebar.style.display = "none"
-        closeBtn.style.display = "none"
-        burguerIcon.style.display = "block"
-    })
+    navOptions.forEach(function (navOption) {
+        if (navOption.id === "mainIcon") return;
 
-    for (const dropOptionElement of dropOption) {
-        dropOptionElement.addEventListener("click", () =>{})
-    }
+        navOption.addEventListener("click", (event) => {
+
+            /**@type HTMLElement*/
+            let activeOption = document.querySelector(".navOption.active");
+            event.preventDefault();
+
+            if (activeOption && activeOption != navOption){
+                activeOption.classList.remove("active");
+            }
+
+            navOption.classList.toggle("active");
+        })
+    })
 });
 

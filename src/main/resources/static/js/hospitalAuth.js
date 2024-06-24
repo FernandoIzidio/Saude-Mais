@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", event => {
             document.getElementById("hospitalStreet").value = address.logradouro;
             document.getElementById("hospitalCity").value = address.localidade;
             document.getElementById("hospitalState").value = AddressForms.STATE_DICTIONARY[address.uf];
-
+            document.getElementById("hospitalNeighborhood").value = address.bairro;
 
         } catch (err) {
             renderErrorFriendly("hospitalZip", "Erro ao buscar cep", "div");

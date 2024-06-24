@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/css/dashboard_layout.css}">
+        <title>Admin</title>
+    </head>
+    <body>
+        <header>
+            <nav id="sidebar">
+                <ul>
+                    <li id="mainItem">
+                        <a class="navOption icon" id="mainIcon" href="#">.</a>
+                    </li>
+
+                    <li id="profile">
+                        <div th:fragment="iconCase">
+                            <img th:if="${user.getGender() == user.getGender().MASCULINO || user.getGender().INTERSEXO}" th:src="@{/images/man.png}" class="icon" id="profileIcon" alt="man profile icon"></img>
+
+                            <img th:if="${user.getGender() == user.getGender().FEMININO}" th:src="@{/images/woman.png}" class="icon" id="profileIcon" alt="man profile icon"></img>
+                        </div>
+                        <div id="profileData">
+                            <p>Welcome,</p>
+                            <p th:text="${user.getFirstName()}"></p>
+                        </div>
+                    </li>
+
+                    <div id="navList" th:include="dashboard_layout.html :: navListMain">
+
+                    </div>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div id="topNav" class="topNav">
+                <div id="burgerIcon" class="burgerIcon">
+                    ☰
+                </div>
+
+                <div id="alerts">
+                    <div id="alertIcon"></div>
+                    <div id="iconDetails">
+                        <div th:replace="dashboard_admin.html :: iconCase"></div>
+                        <div th:text="${user.getFirstName() + ' ' + user.getLastName()}"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div th:text="${user}"></div>
+
+        </main>
+
+        <script th:src="@{/js/dashboardLayout.js}"></script>
+    </body>
+</html>

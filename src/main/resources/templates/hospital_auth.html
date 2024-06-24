@@ -2,105 +2,135 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:fragment="content">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
     <title>Registro de Hospital e Usuário Admin</title>
 </head>
 <body>
 <main>
     <header>
-        <nav th:replace="fragments/navbar_main.html :: navbar">
-        </nav>
+        <nav th:replace="fragments/navbar_main.html :: navbar"></nav>
     </header>
 
+    <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
 
-        <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
+    <form th:action="@{/register}" th:object="${hospitalForm}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <fieldset>
+            <div></div>
 
-        <form th:action="@{/register}" th:object="${hospitalForm}" method="post">
+            <legend>Informações do Hospital</legend>
+            <label for="hospitalName">Nome do Hospital:</label>
+            <input type="text" th:field="*{hospitalEntityDto.name}" id="hospitalName" name="hospitalEntityDto.name">
+            <div th:if="${#fields.hasErrors('hospitalEntityDto.name')}" th:errors="*{hospitalEntityDto.name}" class="error-message"></div><br><br>
+
+            <div th:if="${#fields.hasErrors('hospitalEntityDto.name')}" th:errors="*{hospitalEntityDto.name}" class="error-message"></div>
+
+            <label for="cnpj">CNPJ:</label>
+            <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="hospitalEntityDto.cnpj" maxlength="18">
+            <div th:if="${#fields.hasErrors('hospitalEntityDto.cnpj')}" th:errors="*{hospitalEntityDto.cnpj}" class="error-message"></div><br><br>
+
+            <label for="domainName">Nome de domínio:</label>
+            <input type="text" th:field="*{hospitalEntityDto.domainName}" id="domainName" name="hospitalEntityDto.domainName">
+            <div th:if="${#fields.hasErrors('hospitalEntityDto.domainName')}" th:errors="*{hospitalEntityDto.domainName}" class="error-message"></div><br><br>
+
             <fieldset>
-                <legend>Informações do Hospital</legend>
-                <label for="hospitalName">Nome do Hospital:</label>
-                <input type="text" th:field="*{hospitalEntityDto.name}" id="hospitalName" name="hospitalName" required><br><br>
+                <legend>Endereço do Hospital</legend>
+                <label for="hospitalStreet">Rua:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalEntityDto.address.street">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.street')}" th:errors="*{hospitalEntityDto.address.street}" class="error-message"></div><br><br>
 
-                <label for="cnpj">CNPJ:</label>
-                <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="cnpj" required><br><br>
+                <label for="hospitalNeighborhood">Bairro:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.neighborhood}" id="hospitalNeighborhood" name="hospitalEntityDto.address.neighborhood">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.neighborhood')}" th:errors="*{hospitalEntityDto.address.neighborhood}" class="error-message"></div><br><br>
 
-                <label for="domainName">Nome de dominio:</label>
-                <input type="text" th:field="*{hospitalEntityDto.domainName}" id="domainName" name="domainName">
+                <label for="hospitalAddressNumber">Número:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.number}" id="hospitalAddressNumber" name="hospitalEntityDto.address.number">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.number')}" th:errors="*{hospitalEntityDto.address.number}" class="error-message"></div><br><br>
 
-                <fieldset>
-                    <legend>Endereço do Hospital</legend>
-                    <label for="hospitalStreet">Rua:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalStreet" required><br><br>
+                <label for="hospitalCity">Cidade:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.city}" id="hospitalCity" name="hospitalEntityDto.address.city">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.city')}" th:errors="*{hospitalEntityDto.address.city}" class="error-message"></div><br><br>
 
-                    <label for="hospitalCity">Cidade:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.address.city}" id="hospitalCity" name="hospitalCity" required><br><br>
+                <label for="hospitalState">Estado:</label>
+                <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalEntityDto.address.state">
+                    <option value="">-- Selecione --</option>
+                </select>
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.state')}" th:errors="*{hospitalEntityDto.address.state}" class="error-message"></div><br><br>
 
-                    <label for="hospitalState">Estado:</label>
-                    <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalState">
-                        <option value="">-- Selecione --</option>
-                    </select><br><br>
-
-                    <label for="hospitalZip">CEP:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalZip" required><br><br>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Contato do Hospital</legend>
-                    <label for="hospitalPrimaryPhone">Telefone Principal:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.primaryPhone}" id="hospitalPrimaryPhone" name="hospitalPrimaryPhone" required><br><br>
-
-                    <label for="hospitalSecondaryPhone">Telefone Secundário:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.secondaryPhone}" id="hospitalSecondaryPhone" name="hospitalSecondaryPhone"><br><br>
-
-                    <label for="hospitalEmail">Email:</label>
-                    <input type="email" th:field="*{hospitalEntityDto.email}" id="hospitalEmail" name="hospitalEmail" required><br><br>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Detalhes Hospitalares</legend>
-
-                    <label for="sanitaryLicenseNumber">Número da Licença Sanitária:</label>
-                    <input type="text" th:field="*{hospitalEntityDto.sanitaryLicenseNumber}" id="sanitaryLicenseNumber" name="sanitaryLicenseNumber" required><br><br>
-
-                    <label for="licenseExpirationDate">Data de Expiração da Licença:</label>
-                    <input type="date" th:field="*{hospitalEntityDto.licenseExpirationDate}" id="licenseExpirationDate" name="licenseExpirationDate" required><br><br>
-                </fieldset>
+                <label for="hospitalZip">CEP:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalEntityDto.address.zip" maxlength="9">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.address.zip')}" th:errors="*{hospitalEntityDto.address.zip}" class="error-message"></div><br><br>
             </fieldset>
 
             <fieldset>
-                <legend>Informações do Usuário Admin</legend>
-                <label for="adminFirstName">Primeiro Nome:</label>
-                <input type="text" th:field="*{userEntityDto.firstName}" id="adminFirstName" name="adminFirstName" required><br><br>
+                <legend>Contato do Hospital</legend>
+                <label for="hospitalPrimaryPhone">Telefone Principal:</label>
+                <input type="text" th:field="*{hospitalEntityDto.primaryPhone}" id="hospitalPrimaryPhone" name="hospitalEntityDto.primaryPhone" maxlength="14">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.primaryPhone')}" th:errors="*{hospitalEntityDto.primaryPhone}" class="error-message"></div><br><br>
 
-                <label for="adminLastName">Sobrenome:</label>
-                <input type="text" th:field="*{userEntityDto.lastName}" id="adminLastName" name="adminLastName" required><br><br>
+                <label for="hospitalSecondaryPhone">Telefone Secundário:</label>
+                <input type="text" th:field="*{hospitalEntityDto.secondaryPhone}" id="hospitalSecondaryPhone" name="hospitalEntityDto.secondaryPhone" maxlength="14">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.secondaryPhone')}" th:errors="*{hospitalEntityDto.secondaryPhone}" class="error-message"></div><br><br>
 
-                <label for="adminUsername">Nome de Usuário:</label>
-                <input type="text" th:field="*{userEntityDto.username}" id="adminUsername" name="adminUsername" required><br><br>
-
-                <label for="adminPassword">Senha:</label>
-                <input type="password" th:field="*{userEntityDto.password}" id="adminPassword" name="adminPassword" required><br><br>
-
-                <label for="adminEmail">Email:</label>
-                <input type="email" th:field="*{userEntityDto.email}" id="adminEmail" name="adminEmail" required><br><br>
-
-                <label for="adminPhone">Telefone:</label>
-                <input type="text" th:field="*{userEntityDto.phone}" id="adminPhone" name="adminPhone" required><br><br>
-
-                <label for="adminCpf">CPF:</label>
-                <input type="text" th:field="*{userEntityDto.cpf}" id="adminCpf" name="adminCpf" required><br><br>
-
-                <label for="adminBirthDate">Data de Nascimento:</label>
-                <input type="date" th:field="*{userEntityDto.birthDate}" id="adminBirthDate" name="adminBirthDate" required><br><br>
-
-
+                <label for="hospitalEmail">Email:</label>
+                <input type="email" th:field="*{hospitalEntityDto.email}" id="hospitalEmail" name="hospitalEntityDto.email">
+                <div th:if="${#fields.hasErrors('hospitalEntityDto.email')}" th:errors="*{hospitalEntityDto.email}" class="error-message"></div><br><br>
             </fieldset>
 
-            <input type="hidden" name="adminRole" th:field="*{userEntityDto.role}"  id="adminRole">
+        </fieldset>
 
-            <button type="submit">Enviar</button>
-        </form>
+        <fieldset>
+            <legend>Informações do Usuário Admin</legend>
+            <label for="adminFirstName">Primeiro Nome:</label>
+            <input type="text" th:field="*{userEntityDto.firstName}" id="adminFirstName" name="userEntityDto.firstName">
+            <div th:if="${#fields.hasErrors('userEntityDto.firstName')}" th:errors="*{userEntityDto.firstName}" class="error-message"></div><br><br>
+
+            <label for="adminLastName">Sobrenome:</label>
+            <input type="text" th:field="*{userEntityDto.lastName}" id="adminLastName" name="userEntityDto.lastName">
+            <div th:if="${#fields.hasErrors('userEntityDto.lastName')}" th:errors="*{userEntityDto.lastName}" class="error-message"></div><br><br>
+
+            <div id="genderBio">
+                <label>Sexo Biológico:</label>
+                <div class="genderContainer" th:each="gender : ${genders}" >
+                    <input type="radio" th:field="*{userEntityDto.gender}" th:value="${gender}" th:id="${gender}">
+                    <label th:for="${gender}" th:text="${gender.toString().substring(0, 1).toUpperCase() + gender.toString().substring(1).toLowerCase()}"></label>
+                </div>
+                <div th:if="${#fields.hasErrors('userEntityDto.gender')}" th:errors="*{userEntityDto.gender}" class="error-message"></div>
+            </div>
+
+            <label for="adminUsername">Nome de Usuário:</label>
+            <input type="text" th:field="*{userEntityDto.username}" id="adminUsername" name="userEntityDto.username">
+            <div th:if="${#fields.hasErrors('userEntityDto.username')}" th:errors="*{userEntityDto.username}" class="error-message"></div><br><br>
+
+            <label for="adminPassword">Senha:</label>
+            <input type="password" th:field="*{userEntityDto.password}" id="adminPassword" name="userEntityDto.password">
+            <div th:if="${#fields.hasErrors('userEntityDto.password')}" th:errors="*{userEntityDto.password}" class="error-message"></div><br><br>
+
+            <label for="adminEmail">Email:</label>
+            <input type="email" th:field="*{userEntityDto.email}" id="adminEmail" name="userEntityDto.email">
+            <div th:if="${#fields.hasErrors('userEntityDto.email')}" th:errors="*{userEntityDto.email}" class="error-message"></div><br><br>
+
+            <label for="adminPhone">Celular:</label>
+            <input type="text" th:field="*{userEntityDto.phone}" id="adminPhone" name="userEntityDto.phone" maxlength="15">
+            <div th:if="${#fields.hasErrors('userEntityDto.phone')}"
+                 th:errors="*{userEntityDto.phone}" class="error-message"></div><br><br>
+
+            <label for="adminCpf">CPF:</label>
+            <input type="text" th:field="*{userEntityDto.cpf}" id="adminCpf" name="userEntityDto.cpf" maxlength="14">
+            <div th:if="${#fields.hasErrors('userEntityDto.cpf')}" th:errors="*{userEntityDto.cpf}" class="error-message"></div><br><br>
+
+            <label for="adminBirthDate">Data de Nascimento:</label>
+            <input type="date" th:field="*{userEntityDto.birthDate}" id="adminBirthDate" name="userEntityDto.birthDate">
+            <div th:if="${#fields.hasErrors('userEntityDto.birthDate')}" th:errors="*{userEntityDto.birthDate}" class="error-message"></div><br><br>
+        </fieldset>
+
+        <input type="hidden" name="adminRole" th:field="*{userEntityDto.role}" id="adminRole">
+
+        <button type="submit">Enviar</button>
+    </form>
 </main>
 
 <script type="module" th:src="@{/js/hospitalAuth.js}"></script>
+<script type="module" th:src="@{/js/mask.js}"></script>
 </body>
 </html>
