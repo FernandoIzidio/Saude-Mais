@@ -15,12 +15,15 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 public class AddressEntity implements Serializable {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String street;
+    private String neighborhood;
+    private String number;
     private String city;
     private String state;
     private String zip;
@@ -31,8 +34,10 @@ public class AddressEntity implements Serializable {
     private HospitalEntity hospital;
 
 
-    public AddressEntity(String street, String city, String state, String zip) {
+    public AddressEntity(String street, String neighborhood, String number, String city, String state, String zip) {
         this.street = street;
+        this.neighborhood = neighborhood;
+        this.number = number;
         this.city = city;
         this.state = state;
         this.zip = zip;

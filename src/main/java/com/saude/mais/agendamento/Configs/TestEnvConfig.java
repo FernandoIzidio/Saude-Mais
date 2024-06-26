@@ -3,6 +3,7 @@ package com.saude.mais.agendamento.Configs;
 import com.github.javafaker.Faker;
 import com.saude.mais.agendamento.Entities.AddressEntity;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
+import com.saude.mais.agendamento.Entities.User.Gender;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
 import com.saude.mais.agendamento.Repositories.AddressRepository;
@@ -13,10 +14,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.time.Instant;
+import java.time.*;
 import java.util.*;
 
 @Configuration
@@ -48,23 +48,16 @@ public class TestEnvConfig implements CommandLineRunner {
         List<HospitalEntity> hospitalEntities = new ArrayList<>();
 
         UserEntity user = null;
+        HospitalEntity hospitalEntity = null;
         for (int i = 0; i < 10; i++) {
-            AddressEntity address = new AddressEntity(faker.address().streetName(), faker.address().city(), faker.address().state(), faker.address().zipCode());
+            AddressEntity address = new AddressEntity(faker.address().streetName(), faker.address().streetName(), faker.address().streetAddressNumber(), faker.address().city(), faker.address().state(), faker.address().zipCode());
             addressEntities.add(address);
 
             String hospitalName = faker.internet().domainName().trim().replaceAll("\\s+", "").replace(".", "").toLowerCase();
 
             String domain = "www." + hospitalName + ".saude-mais.com.br";
 
-            HospitalEntity hospital = new HospitalEntity(faker.medical().hospitalName(), generateValidCnpj(), domain, address, generateCellPhoneNumber(), generateCellPhoneNumber(), faker.internet().safeEmailAddress(), String.valueOf(faker.number().numberBetween(10, 50)),  faker.date().birthday().toInstant());
-
-            if (i == 0){
-                System.out.println("Registrou");
-                var bcrypt = new BCryptPasswordEncoder();
-
-                 user = new UserEntity(faker.name().firstName(), faker.name().lastName(), "tulio123", bcrypt.encode("123"), "tulio@email.com", generateCellPhoneNumber(),"11122233355", UserRole.ADMIN, faker.date().birthday().toInstant());
-
-            }
+            HospitalEntity hospital = new HospitalEntity(faker.medical().hospitalName(), generateValidCnpj(), domain, address, generatePhoneNumber(false), generatePhoneNumber(false), faker.internet().safeEmailAddress());
 
 
             hospitalEntities.add(hospital);
@@ -72,7 +65,22 @@ public class TestEnvConfig implements CommandLineRunner {
 
         addressRepository.saveAll(addressEntities);
         hospitalRepository.saveAll(hospitalEntities);
-        user.getHospitals().add(hospitalEntities.get(0));
+
+        var bcrypt = new BCryptPasswordEncoder();
+        Instant birthdate = faker.date().birthday().toInstant();
+
+        AddressEntity addresses = new AddressEntity("a", "b", "c", "d", "Minas Gerais", "f");
+
+        hospitalEntity = new HospitalEntity("Albert Einstein", "75796109000186", "www.albertaoeinstein.saude-mais.com.br", addresses, "3498245817", "3498245818", "albert@email.com");
+
+        user = new UserEntity("Tulio", "Alves", Gender.MASCULINO, "tulio123", bcrypt.encode("123"), "tulio@email.com", generatePhoneNumber(true),"17435731625", UserRole.ADMIN, birthdate);
+
+
+        user.getAddress().add(addresses);
+        user.getHospitals().add(hospitalEntity);
+        hospitalEntity.setAddress(addresses);
+        addressRepository.save(addresses);
+        hospitalRepository.save(hospitalEntity);
         userRepository.save(user);
     }
 
@@ -132,12 +140,13 @@ public class TestEnvConfig implements CommandLineRunner {
         return verifier > 9 ? 0 : verifier;
     }
 
-    public static String generateCellPhoneNumber() {
+    public static String generatePhoneNumber(Boolean cellphone) {
         Random random = new Random();
-        StringBuilder phoneNumber = new StringBuilder("9");
+
+        StringBuilder phoneNumber = cellphone? new StringBuilder("9"): new StringBuilder();
 
         for (int i = 1; i < 11; i++) {
-            phoneNumber.append(random.nextInt(10)); // Gera dígitos de 0 a 9
+            phoneNumber.append(random.nextInt(10));
         }
         return phoneNumber.toString();
     }

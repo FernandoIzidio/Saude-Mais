@@ -35,24 +35,18 @@ public class HospitalEntity implements Serializable {
     private AddressEntity address;
 
     @EqualsAndHashCode.Include
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false, length = 10)
     private String primaryPhone;
 
     @EqualsAndHashCode.Include
-    @Column(length = 11)
+    @Column(length = 10)
     private String secondaryPhone;
 
     @EqualsAndHashCode.Include
     @Column(nullable = false, length = 255)
     private String email;
 
-    @Column(nullable = false)
-    private String sanitaryLicenseNumber;
-
-    @Column(nullable = false)
-    private Instant licenseExpirationDate;
-
-    public HospitalEntity(String name, String cnpj, String website,  AddressEntity address, String primaryPhone, String secondaryPhone, String email, String sanitaryLicenseNumber, Instant licenseExpirationDate) {
+    public HospitalEntity(String name, String cnpj, String website,  AddressEntity address, String primaryPhone, String secondaryPhone, String email) {
         this.name = name;
         this.cnpj = cnpj;
         this.website = website;
@@ -60,7 +54,5 @@ public class HospitalEntity implements Serializable {
         this.primaryPhone = primaryPhone;
         this.secondaryPhone = secondaryPhone;
         this.email = email;
-        this.sanitaryLicenseNumber = sanitaryLicenseNumber;
-        this.licenseExpirationDate = licenseExpirationDate;
     }
 }

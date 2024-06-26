@@ -34,6 +34,10 @@ public class UserEntity implements Serializable, UserDetails {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Gender gender;
+
     @EqualsAndHashCode.Include
     @Column(nullable = false, name = "username", unique = true)
     private String user;
@@ -47,7 +51,7 @@ public class UserEntity implements Serializable, UserDetails {
     private String email;
 
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 11)
     private String phone;
 
     @EqualsAndHashCode.Include
@@ -82,9 +86,10 @@ public class UserEntity implements Serializable, UserDetails {
     List<HospitalEntity> hospitals = new ArrayList<>();
 
     
-    public UserEntity(String firstName, String lastName, String username, String password, String email, String phone, String cpf, UserRole role, Instant birthDate) {
+    public UserEntity(String firstName, String lastName, Gender gender, String username, String password, String email, String phone, String cpf, UserRole role, Instant birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.user = username;
         this.password = password;
         this.email = email;
