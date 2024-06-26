@@ -8,9 +8,15 @@
 </head>
 <body>
 
-
+<header>
+    <nav th:replace="fragments/navbar_main.html :: navbar"></nav>
+</header>
 
 <main>
+    <div th:if="${param.success}" id="successMessage" class="floating-message success-message">
+        <p th:text="'Registro bem-sucedido!'"></p>
+    </div>
+
     <h1>Login</h1>
 
     <form th:action="@{/login}" method="post">
@@ -32,5 +38,6 @@
 </main>
 
 
+<script type="module" th:src="@{/js/login.js}"></script>
 </body>
 </html>
