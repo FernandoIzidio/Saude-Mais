@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -28,7 +27,7 @@ public class HospitalEntity implements Serializable {
     private String cnpj;
 
     @Column(nullable = false, unique = true)
-    private String website;
+    private String subdomain;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -46,10 +45,10 @@ public class HospitalEntity implements Serializable {
     @Column(nullable = false, length = 255)
     private String email;
 
-    public HospitalEntity(String name, String cnpj, String website,  AddressEntity address, String primaryPhone, String secondaryPhone, String email) {
+    public HospitalEntity(String name, String cnpj, String subdomain, AddressEntity address, String primaryPhone, String secondaryPhone, String email) {
         this.name = name;
         this.cnpj = cnpj;
-        this.website = website;
+        this.subdomain = subdomain;
         this.address = address;
         this.primaryPhone = primaryPhone;
         this.secondaryPhone = secondaryPhone;

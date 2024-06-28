@@ -6,13 +6,10 @@
     <title>Registro de Hospital e Usuário Admin</title>
 </head>
 <body>
+<header>
+    <nav th:replace="~{fragments/navbar_main.html :: navbar}"></nav>
+</header>
 <main>
-    <header>
-        <nav th:replace="fragments/navbar_main.html :: navbar"></nav>
-    </header>
-
-
-
     <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
 
     <form th:action="@{/register}" th:object="${hospitalForm}" method="post">
@@ -22,7 +19,7 @@
             <legend>Informações do Hospital</legend>
 
             <label for="hospitalName">Nome do Hospital:</label>
-            <input type="text" th:field="*{hospitalEntityDto.name}" id="hospitalName" name="hospitalEntityDto.name">
+            <input type="text" th:field="*{hospitalEntityDto.name}" id="hospitalName" name="hospitalEntityDto.name" bla>
 
             <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.name')}">
                 <ul>
@@ -33,7 +30,7 @@
             <div id="error-hospitalName" class="error-message"></div>
 
             <label for="cnpj">CNPJ:</label>
-            <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="hospitalEntityDto.cnpj" maxlength="18">
+            <input type="text" th:field="*{hospitalEntityDto.cnpj}" id="cnpj" name="hospitalEntityDto.cnpj" maxlength="18" bla>
 
 
             <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.cnpj')}">
@@ -44,22 +41,23 @@
 
             <div id="error-cnpj" class="error-message"></div>
 
-            <label for="domainName">Nome de domínio:</label>
-            <input type="text" th:field="*{hospitalEntityDto.domainName}" id="domainName" name="hospitalEntityDto.domainName">
+            <label for="subdomain">Nome de subdomínio:</label>
+            <input type="text" th:field="*{hospitalEntityDto.subdomain}" id="subdomain" name="hospitalEntityDto.subdomain" autocomplete="off" maxlength="70" bla>
 
-
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.domainName')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.subdomain')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('hospitalEntityDto.domainName')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('hospitalEntityDto.subdomain')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
-            <div id="error-domainName" class="error-message"></div>
+            <div id="error-subdomain" class="error-message"></div>
+
+            <div id="subdomain-result"></div>
 
             <fieldset>
                 <legend>Endereço do Hospital</legend>
                 <label for="hospitalStreet">Rua:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalEntityDto.address.street">
+                <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalEntityDto.address.street" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.street')}">
@@ -71,7 +69,7 @@
                 <div id="error-hospitalStreet" class="error-message"></div>
 
                 <label for="hospitalNeighborhood">Bairro:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.neighborhood}" id="hospitalNeighborhood" name="hospitalEntityDto.address.neighborhood">
+                <input type="text" th:field="*{hospitalEntityDto.address.neighborhood}" id="hospitalNeighborhood" name="hospitalEntityDto.address.neighborhood" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.neighborhood')}">
@@ -83,7 +81,7 @@
                 <div id="error-hospitalNeighborhood" class="error-message"></div>
 
                 <label for="hospitalAddressNumber">Número:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.number}" id="hospitalAddressNumber" name="hospitalEntityDto.address.number">
+                <input type="text" th:field="*{hospitalEntityDto.address.number}" id="hospitalAddressNumber" name="hospitalEntityDto.address.number" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.number')}">
@@ -95,7 +93,7 @@
                 <div id="error-hospitalAddressNumber" class="error-message"></div>
 
                 <label for="hospitalCity">Cidade:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.city}" id="hospitalCity" name="hospitalEntityDto.address.city">
+                <input type="text" th:field="*{hospitalEntityDto.address.city}" id="hospitalCity" name="hospitalEntityDto.address.city" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.city')}">
@@ -107,7 +105,7 @@
                 <div id="error-hospitalCity" class="error-message"></div>
 
                 <label for="hospitalState">Estado:</label>
-                <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalEntityDto.address.state">
+                <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalEntityDto.address.state" bla>
                     <option value="">-- Selecione --</option>
                 </select>
 
@@ -121,7 +119,7 @@
                 <div id="error-hospitalState" class="error-message"></div>
 
                 <label for="hospitalZip">CEP:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalEntityDto.address.zip" maxlength="9">
+                <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalEntityDto.address.zip" maxlength="9" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.zip')}">
@@ -137,7 +135,7 @@
             <fieldset>
                 <legend>Contato do Hospital</legend>
                 <label for="hospitalPrimaryPhone">Telefone Principal:</label>
-                <input type="text" th:field="*{hospitalEntityDto.primaryPhone}" id="hospitalPrimaryPhone" name="hospitalEntityDto.primaryPhone" maxlength="14">
+                <input type="text" th:field="*{hospitalEntityDto.primaryPhone}" id="hospitalPrimaryPhone" name="hospitalEntityDto.primaryPhone" maxlength="14" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.primaryPhone')}">
@@ -149,7 +147,7 @@
                 <div id="error-hospitalPrimaryPhone" class="error-message"></div>
 
                 <label for="hospitalSecondaryPhone">Telefone Secundário:</label>
-                <input type="text" th:field="*{hospitalEntityDto.secondaryPhone}" id="hospitalSecondaryPhone" name="hospitalEntityDto.secondaryPhone" maxlength="14">
+                <input type="text" th:field="*{hospitalEntityDto.secondaryPhone}" id="hospitalSecondaryPhone" name="hospitalEntityDto.secondaryPhone" maxlength="14" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.secondaryPhone')}">
@@ -161,7 +159,7 @@
                 <div id="error-hospitalSecondaryPhone" class="error-message"></div>
 
                 <label for="hospitalEmail">Email:</label>
-                <input type="email" th:field="*{hospitalEntityDto.email}" id="hospitalEmail" name="hospitalEntityDto.email">
+                <input type="email" th:field="*{hospitalEntityDto.email}" id="hospitalEmail" name="hospitalEntityDto.email" bla>
 
 
                 <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.email')}">
@@ -179,24 +177,24 @@
         <fieldset>
             <legend>Informações do Usuário Admin</legend>
             <label for="adminFirstName">Primeiro Nome:</label>
-            <input type="text" th:field="*{userEntityDto.firstName}" id="adminFirstName" name="userEntityDto.firstName">
+            <input type="text" th:field="*{registerEntityDto.firstName}" id="adminFirstName" name="registerEntityDto.firstName" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.firstName')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.firstName')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.firstName')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.firstName')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
             <div id="error-adminFirstName" class="error-message"></div>
 
             <label for="adminLastName">Sobrenome:</label>
-            <input type="text" th:field="*{userEntityDto.lastName}" id="adminLastName" name="userEntityDto.lastName">
+            <input type="text" th:field="*{registerEntityDto.lastName}" id="adminLastName" name="registerEntityDto.lastName" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.lastName')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.lastName')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.lastName')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.lastName')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -205,27 +203,27 @@
             <div id="genderBio">
                 <label>Sexo Biológico:</label>
                 <div class="genderContainer" th:each="gender : ${genders}" >
-                    <input type="radio" th:field="*{userEntityDto.gender}" th:value="${gender}" th:id="${gender}">
+                    <input type="radio" th:field="*{registerEntityDto.gender}" th:value="${gender}" th:id="${gender}" bla>
                     <label th:for="${gender}" th:text="${gender.toString().substring(0, 1).toUpperCase() + gender.toString().substring(1).toLowerCase()}"></label>
                 </div>
             </div>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.gender')}">
+            <div id="gender-back-error" class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.gender')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.gender')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.gender')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
             <div id="error-genderBio" class="error-message"></div>
 
             <label for="adminUsername">Nome de Usuário:</label>
-            <input type="text" th:field="*{userEntityDto.username}" id="adminUsername" name="userEntityDto.username">
+            <input type="text" th:field="*{registerEntityDto.username}" id="adminUsername" name="registerEntityDto.username" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.username')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.username')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.username')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.username')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -233,22 +231,22 @@
 
 
             <label for="adminPassword">Senha:</label>
-            <input type="password" th:field="*{userEntityDto.password}" id="adminPassword" name="userEntityDto.password">
+            <input type="password" th:field="*{registerEntityDto.password}" id="adminPassword" name="registerEntityDto.password" bla>
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.password')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.password')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.password')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.password')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
             <div id="error-adminPassword" class="error-message"></div>
 
             <label for="adminPassword2">Senha:</label>
-            <input type="password" th:field="*{userEntityDto.password2}" id="adminPassword2" name="userEntityDto.password2">
+            <input type="password" th:field="*{registerEntityDto.password2}" id="adminPassword2" name="registerEntityDto.password2" bla>
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.password2')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.password2')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.password2')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.password2')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -256,24 +254,24 @@
 
 
             <label for="adminEmail">Email:</label>
-            <input type="email" th:field="*{userEntityDto.email}" id="adminEmail" name="userEntityDto.email">
+            <input type="email" th:field="*{registerEntityDto.email}" id="adminEmail" name="registerEntityDto.email" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.email')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.email')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.email')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.email')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
             <div id="error-adminEmail" class="error-message"></div>
 
             <label for="adminPhone">Celular:</label>
-            <input type="text" th:field="*{userEntityDto.phone}" id="adminPhone" name="userEntityDto.phone" maxlength="15">
+            <input type="text" th:field="*{registerEntityDto.phone}" id="adminPhone" name="registerEntityDto.phone" maxlength="15" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.phone')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.phone')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.phone')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.phone')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -281,12 +279,12 @@
 
 
             <label for="adminCpf">CPF:</label>
-            <input type="text" th:field="*{userEntityDto.cpf}" id="adminCpf" name="userEntityDto.cpf" maxlength="14">
+            <input type="text" th:field="*{registerEntityDto.cpf}" id="adminCpf" name="registerEntityDto.cpf" maxlength="14" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.cpf')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.cpf')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.cpf')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.cpf')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -294,12 +292,12 @@
 
 
             <label for="adminBirthDate">Data de Nascimento:</label>
-            <input type="date" th:field="*{userEntityDto.birthDate}" id="adminBirthDate" name="userEntityDto.birthDate">
+            <input type="date" th:field="*{registerEntityDto.birthDate}" id="adminBirthDate" name="registerEntityDto.birthDate" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('userEntityDto.birthDate')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.birthDate')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('userEntityDto.birthDate')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.birthDate')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
@@ -307,14 +305,14 @@
 
         </fieldset>
 
-        <input type="hidden" name="adminRole" th:field="*{userEntityDto.role}" id="adminRole">
+        <input type="hidden" name="adminRole" th:field="*{registerEntityDto.role}" id="adminRole">
 
         <button type="submit">Enviar</button>
     </form>
 </main>
 
-<script type="module" th:src="@{/js/hospitalAuth.js}"></script>
-<script type="module" th:src="@{/js/registerValidation.js}"></script>
-<script type="module" th:src="@{/js/mask.js}"></script>
+<script type="module" th:src="@{/js/hospitalViaCep.js}"></script>
+<script type="module" th:src="@{/js/hospitalInputMask.js}"></script>
+<script type="module" th:src="@{/js/hospitalRegisterValidation.js}"></script>
 </body>
 </html>

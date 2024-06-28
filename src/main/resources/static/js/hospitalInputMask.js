@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const subdomainInput = document.getElementById("subdomain");
     let cpfInput = document.getElementById("adminCpf");
     let cnpjInput = document.getElementById("cnpj");
     let cep = document.getElementById("hospitalZip");
@@ -47,6 +48,19 @@ document.addEventListener("DOMContentLoaded", function() {
         let value = this.value.replace(/\D/g, "");
         value = value.replace(/^(\d{2})(\d)/, "($1) $2");
         value = value.replace(/(\d{4})(\d)/, "$1-$2");
+        this.value = value;
+    });
+
+
+    subdomainInput.addEventListener("input", function() {
+        let value = this.value;
+
+        value = value.replace(/[^\w-]/g, "");
+
+        if (value.length > 70) {
+            value = value.slice(0, 70);
+        }
+
         this.value = value;
     });
 

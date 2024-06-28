@@ -19,11 +19,11 @@ public class AuthorizationService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(email);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByUser(username);
 
-        if (user == null) throw new UsernameNotFoundException("User not found with email:" + email);
+        if (user == null) throw new UsernameNotFoundException("User not found with email:" + username);
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getAuthorities());
+        return new org.springframework.security.core.userdetails.User(user.getUser(), user.getPassword(), user.getAuthorities());
     }
 }

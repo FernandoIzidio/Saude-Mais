@@ -67,9 +67,9 @@ public class TestEnvConfig implements CommandLineRunner {
         hospitalRepository.saveAll(hospitalEntities);
 
         var bcrypt = new BCryptPasswordEncoder();
-        Instant birthdate = faker.date().birthday().toInstant();
+        LocalDate birthdate = faker.date().birthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        AddressEntity addresses = new AddressEntity("a", "b", "c", "d", "Minas Gerais", "f");
+        AddressEntity addresses = new AddressEntity("Rua Maria Aparecida Peixoto", "Santa Rosa", "59", "Uberlândia", "Minas Gerais", "38401312");
 
         hospitalEntity = new HospitalEntity("Albert Einstein", "75796109000186", "www.albertaoeinstein.saude-mais.com.br", addresses, "3498245817", "3498245818", "albert@email.com");
 
@@ -143,11 +143,15 @@ public class TestEnvConfig implements CommandLineRunner {
     public static String generatePhoneNumber(Boolean cellphone) {
         Random random = new Random();
 
-        StringBuilder phoneNumber = cellphone? new StringBuilder("9"): new StringBuilder();
+        StringBuilder phoneNumber = new StringBuilder();
 
         for (int i = 1; i < 11; i++) {
             phoneNumber.append(random.nextInt(10));
         }
+        if (cellphone) {
+            phoneNumber.insert(2, 9);
+        }
+
         return phoneNumber.toString();
     }
 

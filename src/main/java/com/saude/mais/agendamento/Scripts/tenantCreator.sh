@@ -1,15 +1,11 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <tenant_name>"
+    echo "Usage: $0 <subdomain>"
     exit 1
 fi
 
-
-base_domain="saude-mais.com.br"
-tenant_name="$1"
 hosts_file="/etc/hosts"
-
 
 if [ ! -f "$hosts_file" ]; then
     echo "Hosts file not found. Please check your system configuration."
@@ -17,7 +13,7 @@ if [ ! -f "$hosts_file" ]; then
 fi
 
 
-subdomain="www.$tenant_name.$base_domain"
+subdomain="$1"
 entry="127.0.0.1 $subdomain"
 echo "$entry" >> "$hosts_file"
 

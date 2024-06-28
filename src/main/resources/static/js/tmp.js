@@ -7,7 +7,7 @@ function clearError(id) {
 }
 
 function validateGenderSelection() {
-    const genderOptions = document.querySelectorAll('input[name="userEntityDto.gender"]');
+    const genderOptions = document.querySelectorAll('input[name="registerEntityDto.gender"]');
     let isSelected = false;
 
     genderOptions.forEach(option => {
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
 
-        isValid = validateRequired(form.querySelector("#domainName"), "Nome de Domínio") && isValid;
+        isValid = validateRequired(form.querySelector("#subdomain"), "Nome de Subdomínio") && isValid;
         isValid = validateRequired(form.querySelector("#hospitalStreet"), "Rua") && isValid;
         isValid = validateRequired(form.querySelector("#hospitalNeighborhood"), "Bairro") && isValid;
         isValid = validateRequired(form.querySelector("#hospitalAddressNumber"), "Número") && isValid;
@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    const genderOptions = document.querySelectorAll('input[name="userEntityDto.gender"]');
+    const genderOptions = document.querySelectorAll('input[name="registerEntityDto.gender"]');
     genderOptions.forEach(option => {
         option.addEventListener("change", function() {
             clearGenderError();
@@ -290,3 +290,5 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
 });
+
+

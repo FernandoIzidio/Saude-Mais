@@ -49,7 +49,7 @@ label {
     color: #333333;
 }
 
-input[type="email"],
+input[type="text"],
 input[type="password"] {
     width: calc(100% - 22px);
     padding: 10px;
@@ -92,7 +92,7 @@ button:hover {
 }
 
 .floating-message.error-message {
-    background-color: #f44336;
+    background-color: rgb(241, 93, 11);
 }
 
 

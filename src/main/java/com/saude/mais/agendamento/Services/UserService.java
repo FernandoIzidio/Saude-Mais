@@ -1,6 +1,9 @@
 package com.saude.mais.agendamento.Services;
 
-import com.saude.mais.agendamento.Dtos.UserEntityDto;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
+import com.saude.mais.agendamento.Dtos.RegisterEntityDto;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
@@ -9,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -48,16 +49,42 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void save(UserEntityDto user, HospitalEntity hospital) throws Exception {
-        if (this.findByEmail(user.email()) != null) {
-            throw new Exception("Email already exists: " + user.email());
+    public BindingResult validate(RegisterEntityDto registerEntityDto, BindingResult bindingResult) {
+        if (findByUser(registerEntityDto.username()) != null){
+            bindingResult.rejectValue("registerEntityDto.username", "error.registerEntityDto", "Nome de usuário já cadastrado.");
         }
 
-        Instant birhtdate = user.birthDate().atStartOfDay(ZoneId.systemDefault()).toInstant();
-        String hash = new BCryptPasswordEncoder().encode(user.password());
+        if (!registerEntityDto.password().equals(registerEntityDto.password2())) {
+            bindingResult.rejectValue("registerEntityDto.password2", "error.registerEntityDto", "Senhas não podem ser diferentes.");
+        }
 
-        UserEntity userEntity = createUser(user, birhtdate, hash);
+        if (findByEmail(registerEntityDto.email()) != null){
+            bindingResult.rejectValue("registerEntityDto.email", "error.registerEntityDto", "Email já cadastrado.");
+        }
 
+        if (findByCpf(registerEntityDto.cpf()) != null){
+            bindingResult.rejectValue("registerEntityDto.cpf", "error.registerEntityDto", "CPF já cadastrado.");
+
+        }
+
+        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+        try {
+            Phonenumber.PhoneNumber numberProto = phoneNumberUtil.parse(registerEntityDto.phone(), "BR");
+            boolean isvalid = phoneNumberUtil.isValidNumber(numberProto) && phoneNumberUtil.getRegionCodeForNumber(numberProto).equals("BR");
+            if (!isvalid){
+                bindingResult.rejectValue("registerEntityDto.phone", "error.registerEntityDto", "Número de celular invalido.");
+            }
+
+        } catch (NumberParseException e) {
+            System.err.println("NumberParseException was thrown: " + e.toString());
+        }
+
+
+        return bindingResult;
+    }
+
+    public void save(RegisterEntityDto user, HospitalEntity hospital) throws Exception {
+        UserEntity userEntity = user.createUserEntity();
         userEntity.getHospitals().add(hospital);
         userRepository.save(userEntity);
         System.out.println("User registered: " + user.email());
@@ -65,16 +92,16 @@ public class UserService {
 
     public UserEntity getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-        return userRepository.findByEmail(email);
+        String username = authentication.getName();
+        return userRepository.findByUser(username);
     }
 
-    public UserEntity createUser(UserEntityDto user, Instant birthdate, String hash) {
-        return new UserEntity(user.firstName(),user.lastName(), user.gender(), user.username(), hash, user.email(), user.phone(), user.cpf(), user.role(), birthdate);
+    public RegisterEntityDto createNullUserDto(UserRole userRole){
+        return new RegisterEntityDto("", "", null, "", "", "", "", "", "", userRole, null);
     }
 
-    public UserEntityDto createNullUserDto(UserRole userRole){
-        return new UserEntityDto("", "", null, "", "", "", "", "", "", userRole, null);
+    public RegisterEntityDto createUserDto(UserEntity user){
+        return new RegisterEntityDto(user.getFirstName(), user.getLastName(), user.getGender(), user.getUser(), user.getPassword(), user.getPassword(), user.getEmail(), user.getPhone(), user.getCpf(), user.getRole(), user.getBirthDate());
     }
 
     public void deleteById(Long id) {

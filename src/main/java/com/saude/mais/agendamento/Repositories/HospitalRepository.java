@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface HospitalRepository extends JpaRepository<HospitalEntity, Long> {
     HospitalEntity findByCnpj(String cnpj);
-    HospitalEntity findByWebsite(String website);
+    HospitalEntity findBySubdomain(String subdomain);
 }

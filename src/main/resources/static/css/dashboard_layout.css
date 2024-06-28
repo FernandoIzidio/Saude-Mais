@@ -110,7 +110,7 @@ li {
     display: flex;
 }
 
-#sidebar.active #profileIcon {
+#sidebar.active .profileIcon {
     align-self: center;
     display: inline-block;
     background-size: cover;
@@ -246,12 +246,125 @@ li {
     background-color: #696969;
 }
 
+
+main {
+    background-color: #F7F7F7;
+    flex-grow: 1;
+}
+
 .burgerIcon {
     font-size: 28px;
     cursor: pointer;
     padding: 10px;
     color: #312e2e;
 }
+
+
+
+#topNav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #EDEDED;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+}
+
+#topNav #alerts {
+    display: flex;
+}
+
+#topNav #alerts #alertIcon {
+    background-image: url("/images/email.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    width: 18px;
+    height: 18px;
+    margin-right: 20px;
+    align-self: center;
+}
+
+#topNav #alerts #iconDetails {
+    display: flex;
+    cursor: pointer;
+    margin-right: 20px;
+    position: relative;
+}
+
+#topNav #alerts #iconDetails #profileOptions{
+    display: none;
+}
+
+
+#topNav #alerts #iconDetails.active #profileOptions{
+    position: absolute;
+    background-color: white;
+    right: -10px;
+    top: 95%;
+    width: 140%;
+    padding: 10px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.47);
+
+    display: block;
+}
+
+#topNav #alerts #iconDetails #profileOptions ul li:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+#topNav #alerts #iconDetails #profileOptions a{
+    display: inline-block;
+    width: 100%;
+    color: #1f1f1f;
+    cursor: pointer;
+    position: relative;
+}
+
+#topNav #alerts #iconDetails #profileOptions #logout::after{
+    display: inline-block;
+    content: ".";
+    color: transparent;
+    background-image: url("/images/logout.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    position: absolute;
+
+    right: 2px;
+    width: 12px;
+    height: 12px;
+}
+
+#topNav #alerts #iconDetails div:first-child {
+    align-self: center;
+}
+
+
+#topNav #alerts #iconDetails #profileName{
+    margin-left: 6px;
+    align-self: center;
+    color: #595959;
+}
+
+
+#topNav #alerts #iconDetails::after {
+    display: inline-block;
+    content: '.';
+    color: transparent;
+    background-image: url("/images/down-arrow-black.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    align-self: center;
+
+    margin-left: 6px;
+    width: 10px;
+    height: 10px;
+}
+
+
 
 
 @keyframes fadeIn {

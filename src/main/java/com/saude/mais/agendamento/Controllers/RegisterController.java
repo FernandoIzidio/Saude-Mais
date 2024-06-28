@@ -1,12 +1,9 @@
 package com.saude.mais.agendamento.Controllers;
 
-import com.google.i18n.phonenumbers.NumberParseException;
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import com.google.i18n.phonenumbers.Phonenumber;
 import com.saude.mais.agendamento.Dtos.AddressEntityDto;
 import com.saude.mais.agendamento.Dtos.HospitalEntityDto;
 import com.saude.mais.agendamento.Dtos.HospitalRegisterDto;
-import com.saude.mais.agendamento.Dtos.UserEntityDto;
+import com.saude.mais.agendamento.Dtos.RegisterEntityDto;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.Gender;
 import com.saude.mais.agendamento.Entities.User.UserRole;
@@ -41,98 +38,43 @@ public class RegisterController {
     @GetMapping
     public String getHospitalTemplate(Model model) {
 
-        UserEntityDto userEntityDto = userService.createNullUserDto(UserRole.ADMIN);
+        RegisterEntityDto registerEntityDto = userService.createNullUserDto(UserRole.ADMIN);
         AddressEntityDto address = addressService.createNullAddressDto();
         HospitalEntityDto hospitalDto = hospitalService.createNullHospitalDto(address);
-        HospitalRegisterDto hospitalRegisterDto = new HospitalRegisterDto(userEntityDto, hospitalDto);
+        HospitalRegisterDto hospitalRegisterDto = new HospitalRegisterDto(registerEntityDto, hospitalDto);
 
         model.addAttribute("hospitalForm", hospitalRegisterDto);
         model.addAttribute("genders", Gender.values());
-        return "hospital_auth";
+        return "register_hospital";
     }
 
 
     @PostMapping
     public String registerHospital(@ModelAttribute @Valid HospitalRegisterDto hospital, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("hospitalForm", hospital);
-            model.addAttribute("genders", Gender.values());
-            model.addAttribute("bidingResult", bindingResult);
-            return "hospital_auth";
-        }
-
-        UserEntityDto userEntityDto = hospital.userEntityDto().cleanData();
+        RegisterEntityDto registerEntityDto = hospital.registerEntityDto().cleanData();
         HospitalEntityDto hospitalEntityDto = hospital.hospitalEntityDto().cleanData();
         AddressEntityDto address = hospitalEntityDto.address().cleanData();
 
-        String hospitalName = hospitalEntityDto.domainName().trim().replaceAll("\\s+", "").toLowerCase();
+        String hospitalName = hospitalEntityDto.subdomain().trim().replaceAll("\\s+", "").toLowerCase();
         String domain = "www." + hospitalName + ".saude-mais.com.br";
 
-
-        if (userService.findByUser(userEntityDto.username()) != null){
-            bindingResult.rejectValue("userEntityDto.username", "error.userEntityDto", "Nome de usuário já cadastrado.");
-        }
-
-        if (userEntityDto.password() != userEntityDto.password2()) {
-            bindingResult.rejectValue("userEntityDto.password2", "error.userEntityDto", "Senhas não podem ser diferentes.");
-        }
-
-        if (userService.findByEmail(userEntityDto.email()) != null){
-            bindingResult.rejectValue("userEntityDto.email", "error.userEntityDto", "Email já cadastrado.");
-        }
-
-        if (userService.findByCpf(userEntityDto.cpf()) != null){
-            bindingResult.rejectValue("userEntityDto.cpf", "error.userEntityDto", "CPF já cadastrado.");
-
-        }
-
-        if (hospitalService.findByWebsite(domain) != null){
-            bindingResult.rejectValue("hospitalEntityDto.domainName", "error.hospitalEntityDto", "Website já cadastrado.");
-        }
-
-        if (hospitalService.findByCnpj(hospitalEntityDto.cnpj()) != null){
-            bindingResult.rejectValue("hospitalEntityDto.cnpj", "error.hospitalEntityDto", "CNPJ já cadastrado.");
-        }
-
-        PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
-        try {
-            Phonenumber.PhoneNumber numberProto = phoneNumberUtil.parse(userEntityDto.phone(), "BR");
-             boolean isvalid = phoneNumberUtil.isValidNumber(numberProto) && phoneNumberUtil.getRegionCodeForNumber(numberProto).equals("BR");
-             if (!isvalid){
-                 bindingResult.rejectValue("userEntityDto.phone", "error.userEntityDto", "Número de celular invalido.");
-             }
-
-        } catch (NumberParseException e) {
-            System.err.println("NumberParseException was thrown: " + e.toString());
-        }
-
+        userService.validate(registerEntityDto, bindingResult);
+        hospitalService.validate(hospitalEntityDto, domain, bindingResult);
 
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("hospitalForm", hospital);
             model.addAttribute("genders", Gender.values());
             model.addAttribute("bidingResult", bindingResult);
-            return "hospital_auth";
+            return "register_hospital";
         }
-
-
-
-
 
         HospitalEntity hospitalEntity = hospitalService.createHospitalEntity(hospitalEntityDto, domain, addressService.createAddressEntity(address));
 
-
-        String url = "http://" + domain + ":8080/";
-
-        String scriptPath = "src/main/java/com/saude/mais/agendamento/Scripts/tenantCreator.sh";
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder(scriptPath, hospitalName);
-            Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-
-            registrationService.registerHospital(hospitalEntity, userEntityDto);
+            registrationService.registerHospital(hospitalEntity, registerEntityDto);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
 

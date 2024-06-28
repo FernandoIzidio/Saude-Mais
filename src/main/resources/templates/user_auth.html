@@ -9,28 +9,38 @@
 <body>
 
 <header>
-    <nav th:replace="fragments/navbar_main.html :: navbar"></nav>
+    <nav th:replace="~{fragments/navbar_main.html :: navbar}"></nav>
 </header>
 
 <main>
-    <div th:if="${param.success}" id="successMessage" class="floating-message success-message">
+    <div th:if="${param.success}"  class="floating-message success-message">
         <p th:text="'Registro bem-sucedido!'"></p>
+    </div>
+
+    <div th:if="${param.sessionExpired}" class="floating-message success-message">
+        <p th:text="'Sessão Expirada!'"></p>
+    </div>
+
+    <div th:if="${param.logout}" class="floating-message success-message">
+        <p th:text="'Saiu com sucesso!'"></p>
+    </div>
+
+    <div th:if="${param.error}" class="floating-message error-message">
+        <p>Usuário ou senha inválidos, tente novamente.</p>
     </div>
 
     <h1>Login</h1>
 
     <form th:action="@{/login}" method="post">
         <p>
-            <label>Email:</label>
-            <input type="email" name="username" />
+            <label>Usuário:</label>
+            <input type="text" name="username" />
         </p>
         <p>
             <label>Senha:</label>
             <input type="password" name="password" />
         </p>
-        <div th:if="${param.error}">
-            <p>Usuário ou senha inválidos, tente novamente.</p>
-        </div>
+
         <div>
             <button type="submit">Login</button>
         </div>

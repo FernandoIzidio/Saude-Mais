@@ -14,9 +14,10 @@ public record HospitalEntityDto(
         @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}", message = "CNPJ deve estar no formato XX.XXX.XXX/XXXX-XX")
         String cnpj,
 
-        @NotBlank(message = "Nome de domínio é obrigatório")
-        @Size(max = 255, message = "Nome de domínio não pode exceder 255 caracteres")
-        String domainName,
+        @NotBlank(message = "Subdominio é obrigatório")
+        @Size(max = 70, message = "Subdominio não pode exceder 70 caracteres")
+        @Pattern(regexp = "^[\\w-]+$", message = "Subdominio pode conter apenas letras, números, underscores e hífens")
+        String subdomain,
 
         @Valid
         AddressEntityDto address,
@@ -38,7 +39,7 @@ public record HospitalEntityDto(
                 return new HospitalEntityDto(
                         this.name,
                         this.cnpj.replaceAll("\\D", ""),
-                        this.domainName,
+                        this.subdomain,
                         this.address,
                         this.primaryPhone.replaceAll("\\D", ""),
                         this.secondaryPhone.replaceAll("\\D", ""),

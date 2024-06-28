@@ -3,6 +3,8 @@ addEventListener("DOMContentLoaded", () =>{
     let burguerIcon = document.getElementById("burgerIcon");
     let sidebar = document.getElementById("sidebar");
     let navOptions = document.querySelectorAll(".navOption");
+    let iconDetails = document.getElementById("iconDetails");
+
 
     burguerIcon.addEventListener("click", () =>{
       sidebar.classList.toggle("active");
@@ -23,6 +25,10 @@ addEventListener("DOMContentLoaded", () =>{
 
             navOption.classList.toggle("active");
         })
+    })
+
+    iconDetails.addEventListener("click", (event) => {
+        iconDetails.classList.toggle("active");
     })
 });
 

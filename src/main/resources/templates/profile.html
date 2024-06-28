@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Usuário</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+<div class="profile-container">
+    <div id="navbar">
+        <span id="cancel-btn"><a href="/admin/dashboard">Voltar</a></span>
+        <span id="edit-btn">Editar</span>
+    </div>
+
+    <div id="iconCase">
+        <img th:if="${user.gender() == user.gender().MASCULINO || user.gender() == user.gender().INTERSEXO}" th:src="@{/images/profile-man-big.png}" class="icon profileIcon" id="profileMan" alt="man profile icon"></img>
+
+        <img th:if="${user.gender() == user.gender().FEMININO}" th:src="@{/images/profile-woman-big.png}" class="icon profileIcon" id="profileWoman" alt="man profile icon"></img>
+
+    </div>
+
+
+    <form id="profile-form" th:object="${user}">
+        <div class="form-group">
+            <label for="firstName">Nome:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" name="firstName" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Sobrenome:</label>
+            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required>
+        </div>
+        <div class="form-group">
+            <label for="gender">Sexo Biológico:</label>
+            <select id="gender" name="gender" th:field="*{gender}" required>
+                <option th:value="${user.gender().MASCULINO}" th:selected="${user.gender().equals(user.gender().MASCULINO)}">Masculino</option>
+                <option th:value="${user.gender().FEMININO}" th:selected="${user.gender().equals(user.gender().FEMININO)}" >Feminino</option>
+                <option th:value="${user.gender().INTERSEXO}" th:selected="${user.gender().equals(user.gender().INTERSEXO)}">Intersexo</option>
+
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="username">Nome de Usuário:</label>
+            <input type="text" id="username" th:field="*{username}" name="username" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Telefone:</label>
+            <input type="text" id="phone" name="phone" th:field="*{phone}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="birthDate">Data de Nascimento:</label>
+            <input type="date" id="birthDate" th:field="*{birthDate}" name="birthDate" required>
+        </div>
+        <button type="submit" id="save-btn">Salvar</button>
+    </form>
+</div>
+<script th:src="@{/js/profile.js}"></script>
+</body>
+</html>

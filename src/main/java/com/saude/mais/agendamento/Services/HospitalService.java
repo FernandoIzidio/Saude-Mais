@@ -7,6 +7,7 @@ import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Repositories.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.time.Instant;
 
@@ -28,8 +29,21 @@ public class HospitalService {
         return hospitalRepository.findByCnpj(cnpj);
     }
 
-    public HospitalEntity findByWebsite(String website){
-        return hospitalRepository.findByWebsite(website);
+    public HospitalEntity findBySubdomain(String website){
+        return hospitalRepository.findBySubdomain(website);
+    }
+
+    public BindingResult validate(HospitalEntityDto hospitalEntityDto, String subdomain, BindingResult bindingResult){
+
+        if (findBySubdomain(subdomain) != null){
+            bindingResult.rejectValue("hospitalEntityDto.subdomain", "error.hospitalEntityDto", "Website já cadastrado.");
+        }
+
+        if (findByCnpj(hospitalEntityDto.cnpj()) != null){
+            bindingResult.rejectValue("hospitalEntityDto.cnpj", "error.hospitalEntityDto", "CNPJ já cadastrado.");
+        }
+
+        return bindingResult;
     }
 
     public HospitalEntityDto createNullHospitalDto(AddressEntityDto addressEntityDto){

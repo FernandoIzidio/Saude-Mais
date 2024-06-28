@@ -1,4 +1,5 @@
 package com.saude.mais.agendamento.Entities.User;
+import com.saude.mais.agendamento.Dtos.UserEntityDto;
 import com.saude.mais.agendamento.Entities.AddressEntity;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import jakarta.persistence.*;
@@ -9,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,7 +67,7 @@ public class UserEntity implements Serializable, UserDetails {
     private UserRole role;
 
     @Column(name = "birth_date", nullable = false)
-    private Instant birthDate;
+    private LocalDate birthDate;
 
 
 
@@ -86,7 +89,7 @@ public class UserEntity implements Serializable, UserDetails {
     List<HospitalEntity> hospitals = new ArrayList<>();
 
     
-    public UserEntity(String firstName, String lastName, Gender gender, String username, String password, String email, String phone, String cpf, UserRole role, Instant birthDate) {
+    public UserEntity(String firstName, String lastName, Gender gender, String username, String password, String email, String phone, String cpf, UserRole role, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -113,17 +116,21 @@ public class UserEntity implements Serializable, UserDetails {
         return password;
     }
 
+    public Integer getAge(){
+        return Period.between(this.birthDate, LocalDate.now()).getYears();
+    }
+
     @Override
     public String getUsername() {
-        return email;
+        return user;
     }
+
+
 
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
-
 
     @Override
     public boolean isAccountNonLocked() {
@@ -138,5 +145,9 @@ public class UserEntity implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserEntityDto toUserEntityDto() {
+        return new UserEntityDto(this.firstName, this.lastName, this.gender, this.user, this.password, this.email, this.phone, this.cpf, this.role, this.birthDate, this.address, this.hospitals);
     }
 }

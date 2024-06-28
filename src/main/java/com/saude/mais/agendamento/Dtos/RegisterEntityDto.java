@@ -3,7 +3,6 @@ package com.saude.mais.agendamento.Dtos;
 import com.saude.mais.agendamento.Entities.User.Gender;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,12 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
 
-/**
- * DTO para {@link com.saude.mais.agendamento.Entities.User.UserEntity}
- */
-public record UserEntityDto(
+
+public record RegisterEntityDto(
         @NotBlank(message = "O nome não pode estar em branco")
         String firstName,
 
@@ -36,6 +32,10 @@ public record UserEntityDto(
         @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?])[A-Za-z\\d!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]{8,}$",
                 message = "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, uma letra minúscula, um número e um caractere especial")
         String password,
+
+        @NotBlank(message = "A senha não pode estar em branco")
+        String password2,
+
 
         @Email(message = "Formato de email inválido")
         @NotBlank(message = "O email não pode estar em branco")
@@ -56,58 +56,49 @@ public record UserEntityDto(
 
         @NotNull(message = "A data de nascimento não pode ser nula")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        LocalDate birthDate,
-
-        @Valid
-        List<AddressEntityDto> addresses,
-
-        @Valid
-        List<HospitalEntityDto> hospitals
+        LocalDate birthDate
 
 ) implements Serializable {
+        public RegisterEntityDto cleanData() {
+                return new RegisterEntityDto(
+                        this.firstName.trim(),
+                        this.lastName.trim(),
+                        this.gender,
+                        this.username.trim(),
+                        this.password,
+                        this.password2,
+                        this.email.trim(),
+                        this.phone.replaceAll("\\D", ""),
+                        this.cpf.replaceAll("\\D", ""),
+                        this.role,
+                        this.birthDate
+                );
+        }
 
-    public UserEntityDto cleanData() {
-        return new UserEntityDto(
-                this.firstName.trim(),
-                this.lastName.trim(),
-                this.gender,
-                this.username.trim(),
-                this.password,
-                this.email.trim(),
-                this.phone.replaceAll("\\D", ""),
-                this.cpf.replaceAll("\\D", ""),
-                this.role,
-                this.birthDate,
-                this.addresses,
-                this.hospitals
-        );
-    }
+        public RegisterEntityDto prettyData() {
+                String formattedPhone = this.phone.replaceAll("(\\d{2})(\\d{5})(\\d{4})", "($1) $2-$3");
 
-    public UserEntityDto prettyData() {
-        String formattedPhone = this.phone.replaceAll("(\\d{2})(\\d{5})(\\d{4})", "($1) $2-$3");
+                String formattedCpf = this.cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
 
-        String formattedCpf = this.cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+                return new RegisterEntityDto(
+                        this.firstName,
+                        this.lastName,
+                        this.gender,
+                        this.username,
+                        this.password,
+                        this.password2,
+                        this.email,
+                        formattedPhone,
+                        formattedCpf,
+                        this.role,
+                        this.birthDate
+                );
+        }
 
-        return new UserEntityDto(
-                this.firstName,
-                this.lastName,
-                this.gender,
-                this.username,
-                this.password,
-                this.email,
-                formattedPhone,
-                formattedCpf,
-                this.role,
-                this.birthDate,
-                this.addresses,
-                this.hospitals
-        );
-    }
+        public UserEntity createUserEntity() {
+                LocalDate birthdate = birthDate().atStartOfDay(ZoneId.systemDefault()).toLocalDate();
+                String hash = new BCryptPasswordEncoder().encode(password());
+                return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), role(), birthdate);
+        }
 
-    public UserEntity createUserEntity() {
-        LocalDate birthdate = birthDate().atStartOfDay(ZoneId.systemDefault()).toLocalDate();
-        String hash = new BCryptPasswordEncoder().encode(password());
-        return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), role(), birthdate);
-    }
 }
-

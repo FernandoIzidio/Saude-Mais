@@ -6,6 +6,6 @@ import java.util.List;
 /**
  * DTO for {@link com.saude.mais.agendamento.Entities.CustomerEntity}
  */
-public record CustomerEntityDto(UserEntityDto user,
+public record CustomerEntityDto(RegisterEntityDto user,
                                 List<EmergencyContactsEntityDto> emergencyContacts) implements Serializable {
 }

@@ -16,9 +16,10 @@
 
                     <li id="profile">
                         <div th:fragment="iconCase">
-                            <img th:if="${user.getGender() == user.getGender().MASCULINO || user.getGender().INTERSEXO}" th:src="@{/images/man.png}" class="icon" id="profileIcon" alt="man profile icon"></img>
+                            <img th:if="${user.getGender() == user.getGender().MASCULINO || user.getGender() == user.getGender().INTERSEXO}" th:src="@{/images/profile-man.png}" class="icon profileIcon" id="profileMan" alt="man profile icon"></img>
 
-                            <img th:if="${user.getGender() == user.getGender().FEMININO}" th:src="@{/images/woman.png}" class="icon" id="profileIcon" alt="man profile icon"></img>
+                            <img th:if="${user.getGender() == user.getGender().FEMININO}" th:src="@{/images/profile-woman.png}" class="icon profileIcon" id="profileWoman" alt="man profile icon"></img>
+
                         </div>
                         <div id="profileData">
                             <p>Welcome,</p>
@@ -41,14 +42,24 @@
                 <div id="alerts">
                     <div id="alertIcon"></div>
                     <div id="iconDetails">
-                        <div th:replace="dashboard_admin.html :: iconCase"></div>
-                        <div th:text="${user.getFirstName() + ' ' + user.getLastName()}"></div>
+
+                        <div th:replace="~{dashboard_admin.html :: iconCase}"></div>
+                        <div th:text="${user.getFirstName() + ' ' + user.getLastName()}" id="profileName"></div>
+
+                        <div id="profileOptions">
+                            <ul>
+                                <li><a href="/admin/dashboard/profile">Profile</a></li>
+                                <li><a href="/admin/dashboard/profile/settings">Settings</a></li>
+                                <li><a href="/logout" id="logout">Log Out</a></li>
+                            </ul>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
 
 
-            <div th:text="${user}"></div>
+
 
         </main>
 

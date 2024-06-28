@@ -8,7 +8,7 @@ import java.io.Serializable;
 public record HospitalRegisterDto(
         @Valid
         @NotNull(message = "User entity cannot be null")
-        UserEntityDto userEntityDto,
+        RegisterEntityDto registerEntityDto,
 
         @Valid
         @NotNull(message = "Hospital entity cannot be null")
