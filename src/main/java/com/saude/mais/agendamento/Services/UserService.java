@@ -96,10 +96,6 @@ public class UserService {
         return userRepository.findByUser(username);
     }
 
-    public RegisterEntityDto createNullUserDto(UserRole userRole){
-        return new RegisterEntityDto("", "", null, "", "", "", "", "", "", userRole, null);
-    }
-
     public RegisterEntityDto createUserDto(UserEntity user){
         return new RegisterEntityDto(user.getFirstName(), user.getLastName(), user.getGender(), user.getUser(), user.getPassword(), user.getPassword(), user.getEmail(), user.getPhone(), user.getCpf(), user.getRole(), user.getBirthDate());
     }

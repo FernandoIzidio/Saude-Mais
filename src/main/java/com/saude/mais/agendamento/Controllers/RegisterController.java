@@ -38,9 +38,9 @@ public class RegisterController {
     @GetMapping
     public String getHospitalTemplate(Model model) {
 
-        RegisterEntityDto registerEntityDto = userService.createNullUserDto(UserRole.ADMIN);
-        AddressEntityDto address = addressService.createNullAddressDto();
-        HospitalEntityDto hospitalDto = hospitalService.createNullHospitalDto(address);
+        RegisterEntityDto registerEntityDto = RegisterEntityDto.createNullRegisterEntityDto(UserRole.ADMIN);
+        AddressEntityDto address = AddressEntityDto.createNullAddressEntityDto();
+        HospitalEntityDto hospitalDto = HospitalEntityDto.createNullHospitalEntityDto();
         HospitalRegisterDto hospitalRegisterDto = new HospitalRegisterDto(registerEntityDto, hospitalDto);
 
         model.addAttribute("hospitalForm", hospitalRegisterDto);

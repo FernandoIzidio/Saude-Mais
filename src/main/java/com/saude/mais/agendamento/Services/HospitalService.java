@@ -46,9 +46,6 @@ public class HospitalService {
         return bindingResult;
     }
 
-    public HospitalEntityDto createNullHospitalDto(AddressEntityDto addressEntityDto){
-        return new HospitalEntityDto("", "", "",  addressEntityDto, "", "", "");
-    }
 
     public HospitalEntity createHospitalEntity(HospitalEntityDto hospitalEntityDto, String website, AddressEntity address){
         return new HospitalEntity(hospitalEntityDto.name(), hospitalEntityDto.cnpj(), website, address, hospitalEntityDto.primaryPhone(), hospitalEntityDto.secondaryPhone(), hospitalEntityDto.email());

@@ -1,5 +1,6 @@
 package com.saude.mais.agendamento.Entities;
 
+import com.saude.mais.agendamento.Dtos.HospitalEntityDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,5 +54,9 @@ public class HospitalEntity implements Serializable {
         this.primaryPhone = primaryPhone;
         this.secondaryPhone = secondaryPhone;
         this.email = email;
+    }
+
+    public HospitalEntityDto toHospitalEntityDto(){
+        return new HospitalEntityDto(getName(), getCnpj(), getSubdomain(), getAddress().toAddressEntityDto(), getPrimaryPhone(), getSecondaryPhone(), getEmail());
     }
 }

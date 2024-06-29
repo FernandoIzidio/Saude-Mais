@@ -1,5 +1,6 @@
 package com.saude.mais.agendamento.Dtos;
 
+import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.Gender;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
@@ -8,12 +9,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import org.apache.catalina.User;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,7 +59,7 @@ public record UserEntityDto(
 
         @NotNull(message = "A data de nascimento não pode ser nula")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        LocalDate birthDate,
+        LocalDate birthdate,
 
         @Valid
         List<AddressEntityDto> addresses,
@@ -77,7 +80,7 @@ public record UserEntityDto(
                 this.phone.replaceAll("\\D", ""),
                 this.cpf.replaceAll("\\D", ""),
                 this.role,
-                this.birthDate,
+                this.birthdate,
                 this.addresses,
                 this.hospitals
         );
@@ -98,16 +101,22 @@ public record UserEntityDto(
                 formattedPhone,
                 formattedCpf,
                 this.role,
-                this.birthDate,
+                this.birthdate,
                 this.addresses,
                 this.hospitals
         );
     }
 
-    public UserEntity createUserEntity() {
-        LocalDate birthdate = birthDate().atStartOfDay(ZoneId.systemDefault()).toLocalDate();
-        String hash = new BCryptPasswordEncoder().encode(password());
-        return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), role(), birthdate);
+
+    public  UserEntity createUserEntity() {
+        return new UserEntity(firstName(),lastName(), gender(), username(), password(), email(), phone(), cpf(), role(), birthdate());
+    }
+
+    public static UserEntityDto createNullUserEntityDto(){
+        List<AddressEntityDto> address = new ArrayList<>();
+        List<HospitalEntityDto> hospitals = new ArrayList<>();
+
+        return new UserEntityDto("", "", null, "", "", "", "", "", null, null, address, hospitals);
     }
 }
 

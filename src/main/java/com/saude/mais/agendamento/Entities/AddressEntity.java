@@ -1,5 +1,6 @@
 package com.saude.mais.agendamento.Entities;
 
+import com.saude.mais.agendamento.Dtos.AddressEntityDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,4 +43,11 @@ public class AddressEntity implements Serializable {
         this.state = state;
         this.zip = zip;
     }
+
+    public AddressEntityDto toAddressEntityDto(){
+        return new AddressEntityDto(getStreet(), getNeighborhood(), getNumber(), getCity(), getState(), getZip());
+    }
+
+
+
 }

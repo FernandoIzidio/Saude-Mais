@@ -46,4 +46,8 @@ public record HospitalEntityDto(
                         this.email
                 );
         }
+
+        public static HospitalEntityDto createNullHospitalEntityDto(){
+                return new HospitalEntityDto("", "", "", AddressEntityDto.createNullAddressEntityDto(), "", "", "");
+        }
 }

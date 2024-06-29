@@ -41,5 +41,9 @@ public record AddressEntityDto(
                         this.zip.replaceAll("[^\\d]", "")
                 );
         }
+
+        public static AddressEntityDto createNullAddressEntityDto(){
+                return new AddressEntityDto("", "", "", "", "", "");
+        }
 }
 

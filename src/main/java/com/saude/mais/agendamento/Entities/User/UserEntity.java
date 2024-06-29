@@ -1,4 +1,6 @@
 package com.saude.mais.agendamento.Entities.User;
+import com.saude.mais.agendamento.Dtos.AddressEntityDto;
+import com.saude.mais.agendamento.Dtos.HospitalEntityDto;
 import com.saude.mais.agendamento.Dtos.UserEntityDto;
 import com.saude.mais.agendamento.Entities.AddressEntity;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
@@ -148,6 +150,26 @@ public class UserEntity implements Serializable, UserDetails {
     }
 
     public UserEntityDto toUserEntityDto() {
-        return new UserEntityDto(this.firstName, this.lastName, this.gender, this.user, this.password, this.email, this.phone, this.cpf, this.role, this.birthDate, this.address, this.hospitals);
+        return new UserEntityDto(this.firstName, this.lastName, this.gender, this.user, this.password, this.email, this.phone, this.cpf, this.role, this.birthDate, getAddressEntityDtoList(), getHospitalEntityDtoList());
+    }
+
+    public List<AddressEntityDto> getAddressEntityDtoList(){
+        List<AddressEntityDto> addresses = new ArrayList();
+
+        getAddress().forEach((address) -> {
+            addresses.add(address.toAddressEntityDto());
+        });
+
+        return addresses;
+    }
+
+    public List<HospitalEntityDto> getHospitalEntityDtoList(){
+        List<HospitalEntityDto> hospitals = new ArrayList();
+
+        getHospitals().forEach((hospital) -> {
+            hospitals.add(hospital.toHospitalEntityDto());
+        });
+
+        return hospitals;
     }
 }

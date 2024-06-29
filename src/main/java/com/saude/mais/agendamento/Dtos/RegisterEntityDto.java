@@ -101,4 +101,10 @@ public record RegisterEntityDto(
                 return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), role(), birthdate);
         }
 
+
+        public static RegisterEntityDto createNullRegisterEntityDto(UserRole role){
+                return new RegisterEntityDto("", "", null, "", "", "", "", "", "", role, null);
+        }
+
+
 }
