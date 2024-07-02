@@ -26,6 +26,7 @@ public record RegisterEntityDto(
         Gender gender,
 
         @NotBlank(message = "O nome de usuário não pode estar em branco")
+        @Pattern(regexp = "^[\\w]+$", message = "Nome de usuario deve conter apenas letras, números, underscores")
         String username,
 
         @NotBlank(message = "A senha não pode estar em branco")
@@ -51,12 +52,12 @@ public record RegisterEntityDto(
         @NotBlank(message = "O CPF não pode estar em branco")
         String cpf,
 
-        @NotNull(message = "O papel do usuário não pode ser nulo")
-        UserRole role,
+        @NotNull(message = "")
+        UserRole userRole,
 
         @NotNull(message = "A data de nascimento não pode ser nula")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        LocalDate birthDate
+        LocalDate birthdate
 
 ) implements Serializable {
         public RegisterEntityDto cleanData() {
@@ -70,8 +71,8 @@ public record RegisterEntityDto(
                         this.email.trim(),
                         this.phone.replaceAll("\\D", ""),
                         this.cpf.replaceAll("\\D", ""),
-                        this.role,
-                        this.birthDate
+                        this.userRole,
+                        this.birthdate
                 );
         }
 
@@ -90,15 +91,15 @@ public record RegisterEntityDto(
                         this.email,
                         formattedPhone,
                         formattedCpf,
-                        this.role,
-                        this.birthDate
+                        this.userRole,
+                        this.birthdate
                 );
         }
 
-        public UserEntity createUserEntity() {
-                LocalDate birthdate = birthDate().atStartOfDay(ZoneId.systemDefault()).toLocalDate();
+        public UserEntity toUserEntity() {
+                LocalDate birthdate = birthdate().atStartOfDay(ZoneId.systemDefault()).toLocalDate();
                 String hash = new BCryptPasswordEncoder().encode(password());
-                return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), role(), birthdate);
+                return new UserEntity(firstName(),lastName(), gender(), username(), hash, email(), phone(), cpf(), userRole, birthdate);
         }
 
 

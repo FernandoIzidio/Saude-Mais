@@ -157,8 +157,8 @@ public class TestEnvConfig implements CommandLineRunner {
 
 }
 
-//            String role = roles[faker.random().nextInt(0, 2)];
-//            UserRole userRole =  role.equals("admin") ? UserRole.ADMIN : role.equals("worker") ? UserRole.WORKER : UserRole.CUSTOMER;
+//            String userRole = roles[faker.random().nextInt(0, 2)];
+//            UserRole userRole =  userRole.equals("admin") ? UserRole.ADMIN : userRole.equals("worker") ? UserRole.WORKER : UserRole.CUSTOMER;
 //            do {
 //                cpf = generateRandomCPF();
 //                existingUser = userRepository.findByCpf(cpf);

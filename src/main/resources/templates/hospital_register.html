@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en" th:fragment="content">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link rel="stylesheet" th:href="@{/css/hospital_register.css}">
     <title>Registro de Hospital e Usuário Admin</title>
 </head>
 <body>
 <header>
-    <nav th:replace="~{fragments/navbar_main.html :: navbar}"></nav>
+    <nav th:replace="~{fragments/hospital_navbar.html :: navbar}"></nav>
 </header>
 <main>
     <h1>Bem-vindo ao Registro de Hospital e Usuário Admin</h1>
 
-    <form th:action="@{/register}" th:object="${hospitalForm}" method="post">
+    <form th:action="@{/hospital/register}" th:object="${hospitalForm}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <fieldset>
 
@@ -55,6 +55,22 @@
             <div id="subdomain-result"></div>
 
             <fieldset>
+
+
+                <label for="hospitalZip">CEP:</label>
+                <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalEntityDto.address.zip" maxlength="9" bla>
+
+
+                <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.zip')}">
+                    <ul>
+                        <li th:each="err : ${bidingResult.getFieldErrors('hospitalEntityDto.address.zip')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    </ul>
+                </div>
+
+                <div id="error-hospitalZip" class="error-message"></div>
+
+
+
                 <legend>Endereço do Hospital</legend>
                 <label for="hospitalStreet">Rua:</label>
                 <input type="text" th:field="*{hospitalEntityDto.address.street}" id="hospitalStreet" name="hospitalEntityDto.address.street" bla>
@@ -107,6 +123,7 @@
                 <label for="hospitalState">Estado:</label>
                 <select id="hospitalState" th:field="*{hospitalEntityDto.address.state}" name="hospitalEntityDto.address.state" bla>
                     <option value="">-- Selecione --</option>
+                    <option th:each="state : ${states}" th:value="${state}" th:text="${state.nome}"></option>
                 </select>
 
 
@@ -118,17 +135,6 @@
 
                 <div id="error-hospitalState" class="error-message"></div>
 
-                <label for="hospitalZip">CEP:</label>
-                <input type="text" th:field="*{hospitalEntityDto.address.zip}" id="hospitalZip" name="hospitalEntityDto.address.zip" maxlength="9" bla>
-
-
-                <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('hospitalEntityDto.address.zip')}">
-                    <ul>
-                        <li th:each="err : ${bidingResult.getFieldErrors('hospitalEntityDto.address.zip')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
-                    </ul>
-                </div>
-
-                <div id="error-hospitalZip" class="error-message"></div>
 
             </fieldset>
 
@@ -204,7 +210,7 @@
                 <label>Sexo Biológico:</label>
                 <div class="genderContainer" th:each="gender : ${genders}" >
                     <input type="radio" th:field="*{registerEntityDto.gender}" th:value="${gender}" th:id="${gender}" bla>
-                    <label th:for="${gender}" th:text="${gender.toString().substring(0, 1).toUpperCase() + gender.toString().substring(1).toLowerCase()}"></label>
+                    <label th:for="${gender}" th:text="${gender.getName}"></label>
                 </div>
             </div>
 
@@ -291,21 +297,21 @@
             <div id="error-adminCpf" class="error-message"></div>
 
 
-            <label for="adminBirthDate">Data de Nascimento:</label>
-            <input type="date" th:field="*{registerEntityDto.birthDate}" id="adminBirthDate" name="registerEntityDto.birthDate" bla>
+            <label for="adminbirthdate">Data de Nascimento:</label>
+            <input type="date" th:field="*{registerEntityDto.birthdate}" id="adminbirthdate" name="registerEntityDto.birthdate" bla>
 
 
-            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.birthDate')}">
+            <div class="back-error" th:if="${bidingResult != null && bidingResult.hasFieldErrors('registerEntityDto.birthdate')}">
                 <ul>
-                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.birthDate')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
+                    <li th:each="err : ${bidingResult.getFieldErrors('registerEntityDto.birthdate')}" th:text="${err.getDefaultMessage()}" class="error-message"></li>
                 </ul>
             </div>
 
-            <div id="error-adminBirthDate" class="error-message"></div>
+            <div id="error-adminbirthdate" class="error-message"></div>
 
         </fieldset>
 
-        <input type="hidden" name="adminRole" th:field="*{registerEntityDto.role}" id="adminRole">
+        <input type="hidden" name="adminRole" th:field="*{registerEntityDto.userRole}" id="adminRole">
 
         <button type="submit">Enviar</button>
     </form>

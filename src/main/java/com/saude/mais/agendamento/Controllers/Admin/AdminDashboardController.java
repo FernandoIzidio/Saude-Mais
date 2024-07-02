@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/admin")
-public class DashboardController {
+public class AdminDashboardController {
 
     private final UserService userService;
 
     @Autowired
-    public DashboardController(UserService userService) {
+    public AdminDashboardController(UserService userService) {
         this.userService = userService;
     }
 
@@ -32,7 +32,7 @@ public class DashboardController {
 
             model.addAttribute("user", authenticatedUser);
             model.addAttribute("hospital", authenticatedUser.getHospitals().get(0));
-            return "dashboard_admin";
+            return "admin_dashboard";
         } catch (SessionExpiredException e) {
             return "redirect:/login?sessionExpired";
         }

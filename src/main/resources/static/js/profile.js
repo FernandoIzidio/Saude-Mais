@@ -1,9 +1,10 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-    const editBtn = document.getElementById('edit-btn');
-    const saveBtn = document.getElementById('save-btn');
+    const editBtn = document.getElementById('editBtn');
+    const saveBtn = document.getElementById('saveBtn');
     const profileForm = document.getElementById('profile-form');
     const formElements = profileForm.elements;
+    const addAddressBtn = document.getElementById('add-address-btn');
+    const addressList = document.getElementById('address-list');
 
     editBtn.addEventListener('click', () => {
         if (editBtn.textContent === "Editar"){
@@ -12,43 +13,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             editBtn.textContent = "Cancelar";
+            addAddressBtn.style.display = "block";
             saveBtn.style.display = 'block';
         } else  {
             for (let element of formElements) {
                 element.disabled = true;
             }
 
-
             editBtn.textContent = "Editar";
+            addAddressBtn.style.display = "none";
             saveBtn.style.display = 'none';
         }
-    }
-        );
+    });
 
-    profileForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-
-        const cleanedData = {
-            firstName: formElements['firstName'].value.trim(),
-            lastName: formElements['lastName'].value.trim(),
-            gender: formElements['gender'].value,
-            username: formElements['username'].value.trim(),
-            password: formElements['password'].value,
-            password2: formElements['password2'].value,
-            email: formElements['email'].value.trim(),
-            phone: formElements['phone'].value.replace(/\D/g, ''),
-            cpf: formElements['cpf'].value.replace(/\D/g, ''),
-            role: formElements['role'].value,
-            birthDate: formElements['birthDate'].value,
-        };
-
-
-        for (let element of formElements) {
-            element.disabled = true;
-        }
-        editBtn.style.display = 'block';
-        saveBtn.style.display = 'none';
+    addAddressBtn.addEventListener('click', () => {
+        const newAddress = document.createElement('div');
+        newAddress.innerHTML = `
+            <hr>
+            <div class="form-group">
+                <label>Rua:</label>
+                <input type="text" name="newStreet" placeholder="Rua" required>
+            </div>
+            <div class="form-group">
+                <label>Cidade:</label>
+                <input type="text" name="newCity" placeholder="Cidade" required>
+            </div>
+            <div class="form-group">
+                <label>Estado:</label>
+                <input type="text" name="newState" placeholder="Estado" required>
+            </div>
+            <div class="form-group">
+                <label>CEP:</label>
+                <input type="text" name="newZip" placeholder="CEP" required>
+            </div>
+        `;
+        addressList.appendChild(newAddress);
     });
 
     for (let element of formElements) {

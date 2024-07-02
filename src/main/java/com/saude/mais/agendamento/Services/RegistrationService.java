@@ -3,6 +3,7 @@ package com.saude.mais.agendamento.Services;
 import com.saude.mais.agendamento.Dtos.RegisterEntityDto;
 import com.saude.mais.agendamento.Entities.AddressEntity;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
+import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public void registerHospital(HospitalEntity hospital, RegisterEntityDto user) throws Exception {
+    public void registerHospital(HospitalEntity hospital, UserEntity user) {
 
         String scriptPath = "src/main/java/com/saude/mais/agendamento/Scripts/tenantCreator.sh";
         try {

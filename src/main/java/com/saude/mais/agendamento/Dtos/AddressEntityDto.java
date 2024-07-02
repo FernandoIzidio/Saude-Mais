@@ -1,5 +1,6 @@
 package com.saude.mais.agendamento.Dtos;
 
+import com.saude.mais.agendamento.Entities.AddressEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -44,6 +45,10 @@ public record AddressEntityDto(
 
         public static AddressEntityDto createNullAddressEntityDto(){
                 return new AddressEntityDto("", "", "", "", "", "");
+        }
+
+        public AddressEntity toAddressEntity() {
+                return new AddressEntity(street(), neighborhood(), number(), city(), state(), zip());
         }
 }
 

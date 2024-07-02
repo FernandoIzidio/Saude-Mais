@@ -2,7 +2,6 @@ import { AddressForms } from "./Util/formUtils.js";
 import { renderErrorFriendly } from "./Util/ErrorFriendly.js";
 
 document.addEventListener("DOMContentLoaded", event => {
-    AddressForms.renderStateOptions("hospitalState");
 
     const cepInput = document.getElementById("hospitalZip");
 

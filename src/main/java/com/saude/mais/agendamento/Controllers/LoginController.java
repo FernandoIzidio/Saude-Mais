@@ -1,10 +1,8 @@
 package com.saude.mais.agendamento.Controllers;
 
 
-import com.saude.mais.agendamento.Entities.HospitalEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping
@@ -30,7 +27,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getTemplate() {
-        return "user_auth";
+        return "login";
     }
 
     @PostMapping("/login")
@@ -45,7 +42,7 @@ public class LoginController {
             return "redirect:/";
         } catch (AuthenticationException e) {
             model.addAttribute("loginError", true);
-            return "user_auth";
+            return "login";
         }
     }
 }

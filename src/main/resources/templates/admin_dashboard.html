@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
                         </div>
                     </li>
 
-                    <div id="navList" th:include="dashboard_layout.html :: navListMain">
+                    <div id="navList" th:include="~{dashboard_layout.html :: navListMain}">
 
                     </div>
                 </ul>
@@ -43,7 +43,7 @@
                     <div id="alertIcon"></div>
                     <div id="iconDetails">
 
-                        <div th:replace="~{dashboard_admin.html :: iconCase}"></div>
+                        <div th:replace="~{admin_dashboard.html :: iconCase}"></div>
                         <div th:text="${user.getFirstName() + ' ' + user.getLastName()}" id="profileName"></div>
 
                         <div id="profileOptions">

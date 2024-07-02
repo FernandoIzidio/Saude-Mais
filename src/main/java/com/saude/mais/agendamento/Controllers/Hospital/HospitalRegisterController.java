@@ -1,11 +1,13 @@
-package com.saude.mais.agendamento.Controllers;
+package com.saude.mais.agendamento.Controllers.Hospital;
 
 import com.saude.mais.agendamento.Dtos.AddressEntityDto;
 import com.saude.mais.agendamento.Dtos.HospitalEntityDto;
 import com.saude.mais.agendamento.Dtos.HospitalRegisterDto;
 import com.saude.mais.agendamento.Dtos.RegisterEntityDto;
+import com.saude.mais.agendamento.Entities.BrazilianStates;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.Gender;
+import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
 import com.saude.mais.agendamento.Services.*;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/register")
-public class RegisterController {
+@RequestMapping(value = "/hospital/register")
+public class HospitalRegisterController {
 
     private AddressService addressService;
     private UserService userService;
@@ -28,7 +30,7 @@ public class RegisterController {
     private HospitalService hospitalService;
 
     @Autowired
-    public RegisterController(RegistrationService registrationService, AddressService addressService, UserService userService, HospitalService hospitalService) {
+    public HospitalRegisterController(RegistrationService registrationService, AddressService addressService, UserService userService, HospitalService hospitalService) {
         this.registrationService = registrationService;
         this.addressService = addressService;
         this.userService = userService;
@@ -36,16 +38,17 @@ public class RegisterController {
     }
 
     @GetMapping
-    public String getHospitalTemplate(Model model) {
+    public String getTemplate(Model model) {
 
         RegisterEntityDto registerEntityDto = RegisterEntityDto.createNullRegisterEntityDto(UserRole.ADMIN);
-        AddressEntityDto address = AddressEntityDto.createNullAddressEntityDto();
         HospitalEntityDto hospitalDto = HospitalEntityDto.createNullHospitalEntityDto();
         HospitalRegisterDto hospitalRegisterDto = new HospitalRegisterDto(registerEntityDto, hospitalDto);
 
+
         model.addAttribute("hospitalForm", hospitalRegisterDto);
         model.addAttribute("genders", Gender.values());
-        return "register_hospital";
+        model.addAttribute("states", BrazilianStates.values());
+        return "hospital_register";
     }
 
 
@@ -55,27 +58,22 @@ public class RegisterController {
         HospitalEntityDto hospitalEntityDto = hospital.hospitalEntityDto().cleanData();
         AddressEntityDto address = hospitalEntityDto.address().cleanData();
 
-        String hospitalName = hospitalEntityDto.subdomain().trim().replaceAll("\\s+", "").toLowerCase();
-        String domain = "www." + hospitalName + ".saude-mais.com.br";
-
         userService.validate(registerEntityDto, bindingResult);
-        hospitalService.validate(hospitalEntityDto, domain, bindingResult);
-
+        hospitalService.validate(hospitalEntityDto, bindingResult);
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("hospitalForm", hospital);
             model.addAttribute("genders", Gender.values());
             model.addAttribute("bidingResult", bindingResult);
-            return "register_hospital";
+            model.addAttribute("states", BrazilianStates.values());
+            return "hospital_register";
         }
 
-        HospitalEntity hospitalEntity = hospitalService.createHospitalEntity(hospitalEntityDto, domain, addressService.createAddressEntity(address));
+        HospitalEntity hospitalEntity = hospitalEntityDto.toHospitalEntity();
+        UserEntity userEntity =  registerEntityDto.toUserEntity();
 
-        try {
-            registrationService.registerHospital(hospitalEntity, registerEntityDto);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        registrationService.registerHospital(hospitalEntity, userEntity);
 
 
         return "redirect:/login?success";

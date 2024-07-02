@@ -1,5 +1,6 @@
 package com.saude.mais.agendamento.Dtos;
 
+import com.saude.mais.agendamento.Entities.HospitalEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
@@ -49,5 +50,12 @@ public record HospitalEntityDto(
 
         public static HospitalEntityDto createNullHospitalEntityDto(){
                 return new HospitalEntityDto("", "", "", AddressEntityDto.createNullAddressEntityDto(), "", "", "");
+        }
+
+        public HospitalEntity toHospitalEntity(){
+                String hospitalName = subdomain().trim().replaceAll("\\s+", "").toLowerCase();
+                String subdomain = "www." + hospitalName + ".saude-mais.com.br";
+
+                return new HospitalEntity(name(), cnpj(), subdomain, address().toAddressEntity(), primaryPhone(), secondaryPhone(), email());
         }
 }

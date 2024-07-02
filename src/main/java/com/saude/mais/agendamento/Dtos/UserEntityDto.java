@@ -1,6 +1,5 @@
 package com.saude.mais.agendamento.Dtos;
 
-import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.Gender;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
@@ -9,13 +8,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import org.apache.catalina.User;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +18,9 @@ import java.util.List;
  * DTO para {@link com.saude.mais.agendamento.Entities.User.UserEntity}
  */
 public record UserEntityDto(
+        @NotNull(message = "")
+        Long id,
+
         @NotBlank(message = "O nome não pode estar em branco")
         String firstName,
 
@@ -33,6 +31,7 @@ public record UserEntityDto(
         Gender gender,
 
         @NotBlank(message = "O nome de usuário não pode estar em branco")
+        @Pattern(regexp = "^[\\w]+$", message = "Nome de usuario deve conter apenas letras, números, underscores")
         String username,
 
         @NotBlank(message = "A senha não pode estar em branco")
@@ -55,7 +54,7 @@ public record UserEntityDto(
         String cpf,
 
         @NotNull(message = "O papel do usuário não pode ser nulo")
-        UserRole role,
+        UserRole userRole,
 
         @NotNull(message = "A data de nascimento não pode ser nula")
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -71,6 +70,7 @@ public record UserEntityDto(
 
     public UserEntityDto cleanData() {
         return new UserEntityDto(
+                this.id,
                 this.firstName.trim(),
                 this.lastName.trim(),
                 this.gender,
@@ -79,7 +79,7 @@ public record UserEntityDto(
                 this.email.trim(),
                 this.phone.replaceAll("\\D", ""),
                 this.cpf.replaceAll("\\D", ""),
-                this.role,
+                this.userRole,
                 this.birthdate,
                 this.addresses,
                 this.hospitals
@@ -92,6 +92,7 @@ public record UserEntityDto(
         String formattedCpf = this.cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
 
         return new UserEntityDto(
+                this.id,
                 this.firstName,
                 this.lastName,
                 this.gender,
@@ -100,7 +101,7 @@ public record UserEntityDto(
                 this.email,
                 formattedPhone,
                 formattedCpf,
-                this.role,
+                this.userRole,
                 this.birthdate,
                 this.addresses,
                 this.hospitals
@@ -108,15 +109,15 @@ public record UserEntityDto(
     }
 
 
-    public  UserEntity createUserEntity() {
-        return new UserEntity(firstName(),lastName(), gender(), username(), password(), email(), phone(), cpf(), role(), birthdate());
+    public  UserEntity toUserEntity() {
+        return new UserEntity(firstName(),lastName(), gender(), username(), password(), email(), phone(), cpf(), userRole(), birthdate());
     }
 
     public static UserEntityDto createNullUserEntityDto(){
         List<AddressEntityDto> address = new ArrayList<>();
         List<HospitalEntityDto> hospitals = new ArrayList<>();
 
-        return new UserEntityDto("", "", null, "", "", "", "", "", null, null, address, hospitals);
+        return new UserEntityDto(null, "", "", null, "", "", "", "", "", null, null, address, hospitals);
     }
 }
 

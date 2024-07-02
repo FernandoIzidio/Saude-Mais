@@ -57,6 +57,6 @@ public class HospitalEntity implements Serializable {
     }
 
     public HospitalEntityDto toHospitalEntityDto(){
-        return new HospitalEntityDto(getName(), getCnpj(), getSubdomain(), getAddress().toAddressEntityDto(), getPrimaryPhone(), getSecondaryPhone(), getEmail());
+        return new HospitalEntityDto(getName(), getCnpj(), getSubdomain().replace("www.", "").replace(".saude-mais.com.br", ""), getAddress().toAddressEntityDto(), getPrimaryPhone(), getSecondaryPhone(), getEmail());
     }
 }

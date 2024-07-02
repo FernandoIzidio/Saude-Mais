@@ -3,6 +3,7 @@ package com.saude.mais.agendamento.Services;
 import com.saude.mais.agendamento.Dtos.AddressEntityDto;
 import com.saude.mais.agendamento.Dtos.HospitalEntityDto;
 import com.saude.mais.agendamento.Entities.AddressEntity;
+import com.saude.mais.agendamento.Entities.BrazilianStates;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Repositories.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,10 @@ public class HospitalService {
         return hospitalRepository.findBySubdomain(website);
     }
 
-    public BindingResult validate(HospitalEntityDto hospitalEntityDto, String subdomain, BindingResult bindingResult){
+    public BindingResult validate(HospitalEntityDto hospitalEntityDto, BindingResult bindingResult){
+
+        String hospitalName = hospitalEntityDto.subdomain().trim().replaceAll("\\s+", "").toLowerCase();
+        String subdomain = "www." + hospitalName + ".saude-mais.com.br";
 
         if (findBySubdomain(subdomain) != null){
             bindingResult.rejectValue("hospitalEntityDto.subdomain", "error.hospitalEntityDto", "Website já cadastrado.");
@@ -44,11 +48,6 @@ public class HospitalService {
         }
 
         return bindingResult;
-    }
-
-
-    public HospitalEntity createHospitalEntity(HospitalEntityDto hospitalEntityDto, String website, AddressEntity address){
-        return new HospitalEntity(hospitalEntityDto.name(), hospitalEntityDto.cnpj(), website, address, hospitalEntityDto.primaryPhone(), hospitalEntityDto.secondaryPhone(), hospitalEntityDto.email());
     }
 
     public void save(HospitalEntity hospitalEntity){

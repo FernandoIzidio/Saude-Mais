@@ -4,6 +4,7 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import com.saude.mais.agendamento.Dtos.RegisterEntityDto;
+import com.saude.mais.agendamento.Dtos.UserEntityDto;
 import com.saude.mais.agendamento.Entities.HospitalEntity;
 import com.saude.mais.agendamento.Entities.User.UserEntity;
 import com.saude.mais.agendamento.Entities.User.UserRole;
@@ -49,9 +50,14 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+
     public BindingResult validate(RegisterEntityDto registerEntityDto, BindingResult bindingResult) {
         if (findByUser(registerEntityDto.username()) != null){
             bindingResult.rejectValue("registerEntityDto.username", "error.registerEntityDto", "Nome de usuário já cadastrado.");
+        }
+
+        if (registerEntityDto.userRole() != UserRole.ADMIN){
+            bindingResult.rejectValue("registerEntityDto.userRole", "error.registerEntityDto", "");
         }
 
         if (!registerEntityDto.password().equals(registerEntityDto.password2())) {
@@ -83,21 +89,30 @@ public class UserService {
         return bindingResult;
     }
 
-    public void save(RegisterEntityDto user, HospitalEntity hospital) throws Exception {
-        UserEntity userEntity = user.createUserEntity();
-        userEntity.getHospitals().add(hospital);
-        userRepository.save(userEntity);
-        System.out.println("User registered: " + user.email());
+    public BindingResult validate(UserEntityDto userEntityDto, BindingResult bindingResult) {
+
+
+        if (findByUser(userEntityDto.username()) != null){
+                bindingResult.rejectValue("userEntityDto.username", "error.userEntityDto", "Nome de usuário já cadastrado.");
+        }
+
+        return bindingResult;
+    }
+
+    public void save(UserEntity user, HospitalEntity hospital) {
+        user.getHospitals().add(hospital);
+        userRepository.save(user);
+        System.out.println("User registered: " + user.getEmail());
+    }
+
+    public void save(UserEntity user) {
+        userRepository.save(user);
     }
 
     public UserEntity getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         return userRepository.findByUser(username);
-    }
-
-    public RegisterEntityDto createUserDto(UserEntity user){
-        return new RegisterEntityDto(user.getFirstName(), user.getLastName(), user.getGender(), user.getUser(), user.getPassword(), user.getPassword(), user.getEmail(), user.getPhone(), user.getCpf(), user.getRole(), user.getBirthDate());
     }
 
     public void deleteById(Long id) {

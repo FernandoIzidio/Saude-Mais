@@ -17,14 +17,6 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
-    public AddressEntity createAddressEntity(AddressEntityDto address) {
-        return new AddressEntity(address.street(),  address.neighborhood(), address.number(), address.city(), address.state(), address.zip());
-    }
-
-    public AddressEntityDto createNullAddressDto() {
-        return new AddressEntityDto("", "", "","", "","");
-    }
-
     public void save(AddressEntity address) {
         addressRepository.save(address);
     }

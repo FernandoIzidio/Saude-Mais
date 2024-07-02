@@ -11,7 +11,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -66,10 +65,10 @@ public class UserEntity implements Serializable, UserDetails {
 
 
     @Column(nullable = false)
-    private UserRole role;
+    private UserRole userRole;
 
     @Column(name = "birth_date", nullable = false)
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
 
 
@@ -91,7 +90,7 @@ public class UserEntity implements Serializable, UserDetails {
     List<HospitalEntity> hospitals = new ArrayList<>();
 
     
-    public UserEntity(String firstName, String lastName, Gender gender, String username, String password, String email, String phone, String cpf, UserRole role, LocalDate birthDate) {
+    public UserEntity(String firstName, String lastName, Gender gender, String username, String password, String email, String phone, String cpf, UserRole userRole, LocalDate birthdate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -100,15 +99,15 @@ public class UserEntity implements Serializable, UserDetails {
         this.email = email;
         this.phone = phone;
         this.cpf = cpf;
-        this.role = role;
-        this.birthDate = birthDate;
+        this.userRole = userRole;
+        this.birthdate = birthdate;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_WORKER"), new SimpleGrantedAuthority("ROLE_CUSTOMER"));
+        if (this.userRole == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_WORKER"), new SimpleGrantedAuthority("ROLE_CUSTOMER"));
 
-        if (this.role == UserRole.WORKER) return List.of(new SimpleGrantedAuthority("ROLE_WORKER"));
+        if (this.userRole == UserRole.WORKER) return List.of(new SimpleGrantedAuthority("ROLE_WORKER"));
 
         return List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
     }
@@ -119,7 +118,7 @@ public class UserEntity implements Serializable, UserDetails {
     }
 
     public Integer getAge(){
-        return Period.between(this.birthDate, LocalDate.now()).getYears();
+        return Period.between(this.birthdate, LocalDate.now()).getYears();
     }
 
     @Override
@@ -150,8 +149,18 @@ public class UserEntity implements Serializable, UserDetails {
     }
 
     public UserEntityDto toUserEntityDto() {
-        return new UserEntityDto(this.firstName, this.lastName, this.gender, this.user, this.password, this.email, this.phone, this.cpf, this.role, this.birthDate, getAddressEntityDtoList(), getHospitalEntityDtoList());
+        return new UserEntityDto(this.id, this.firstName, this.lastName, this.gender, this.user, this.password, this.email, this.phone, this.cpf, this.userRole, this.birthdate, getAddressEntityDtoList(), getHospitalEntityDtoList());
     }
+
+    public void cleanData() {
+         this.firstName = this.firstName.trim();
+         this.lastName = this.lastName.trim();
+         this.user   = this.user.trim();
+         this.email = this.email.trim();
+         this.phone = this.phone.replaceAll("\\D", "");
+         this.cpf = this.cpf.replaceAll("\\D", "");
+    }
+
 
     public List<AddressEntityDto> getAddressEntityDtoList(){
         List<AddressEntityDto> addresses = new ArrayList();

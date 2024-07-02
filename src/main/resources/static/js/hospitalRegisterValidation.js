@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         displayError("error-adminCpf", "CPF inválido.");
                     }
                     break;
-                case "adminBirthDate":
+                case "adminbirthdate":
                     validateRequired(input, "Data de Nascimento");
                     break;
                 default:

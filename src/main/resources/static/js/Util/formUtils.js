@@ -1,47 +1,33 @@
 export class AddressForms {
     static STATE_DICTIONARY = {
-        "AC": "Acre",
-        "AL": "Alagoas",
-        "AP": "Amapá",
-        "AM": "Amazonas",
-        "BA": "Bahia",
-        "CE": "Ceará",
-        "DF": "Distrito Federal",
-        "ES": "Espírito Santo",
-        "GO": "Goiás",
-        "MA": "Maranhão",
-        "MT": "Mato Grosso",
-        "MS": "Mato Grosso do Sul",
-        "MG": "Minas Gerais",
-        "PA": "Pará",
-        "PB": "Paraíba",
-        "PR": "Paraná",
-        "PE": "Pernambuco",
-        "PI": "Piauí",
-        "RJ": "Rio de Janeiro",
-        "RN": "Rio Grande do Norte",
-        "RS": "Rio Grande do Sul",
-        "RO": "Rondônia",
-        "RR": "Roraima",
-        "SC": "Santa Catarina",
-        "SP": "São Paulo",
-        "SE": "Sergipe",
-        "TO": "Tocantins"
+        "AC": "ACRE",
+        "AL": "ALAGOAS",
+        "AP": "AMAPA",
+        "AM": "AMAZONAS",
+        "BA": "BAHIA",
+        "CE": "CEARA",
+        "DF": "DISTRITO_FEDERAL",
+        "ES": "ESPIRITO_SANTO",
+        "GO": "GOIAS",
+        "MA": "MARANHAO",
+        "MT": "MATO_GROSSO",
+        "MS": "MATO_GROSSO_DO_SUL",
+        "MG": "MINAS_GERAIS",
+        "PA": "PARA",
+        "PB": "PARAIBA",
+        "PR": "PARANA",
+        "PE": "PERNAMBUCO",
+        "PI": "PIAUI",
+        "RJ": "RIO_DE_JANEIRO",
+        "RN": "RIO_GRANDE_DO_NORTE",
+        "RS": "RIO_GRANDE_DO_SUL",
+        "RO": "RONDONIA",
+        "RR": "RORAIMA",
+        "SC": "SANTA_CATARINA",
+        "SP": "SAO_PAULO",
+        "SE": "SERGIPE",
+        "TO": "TOCANTINS"
     };
-
-    static renderStateOptions(selectId) {
-
-        const selectTag = document.getElementById(selectId);
-        let states = Object.values(this.STATE_DICTIONARY);
-        states.forEach(function (state) {
-            let optionTag = document.createElement('option');
-
-            optionTag.text = state;
-            optionTag.value = state;
-            selectTag.add(optionTag);
-        });
-
-    }
 
     /**
      * @typedef {Object} ViaCepAddress
