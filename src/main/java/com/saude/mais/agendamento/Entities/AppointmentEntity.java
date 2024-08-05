@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Getter
@@ -27,7 +26,7 @@ public class AppointmentEntity implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private Instant date;
+    private LocalDate date;
 
 
     @ManyToOne
@@ -43,20 +42,19 @@ public class AppointmentEntity implements Serializable {
     )
     private List<WorkerEntity> workers;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
-    private RoomEntity room;
+
+    private String room;
 
     @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false)
+
     private String state;
 
-    @Column(length = 1000, nullable = false)
+
     private String observations;
 
-    @Column(nullable = false)
+
     private String diagnostic;
 
 
@@ -73,15 +71,13 @@ public class AppointmentEntity implements Serializable {
     @JoinColumn(name = "hospital_id")
     private HospitalEntity hospital;
 
-    public AppointmentEntity(Instant date, CustomerEntity customer, WorkerEntity worker, RoomEntity room, String type, String state, String observations, String diagnostic) {
+
+
+    public AppointmentEntity(LocalDate date, CustomerEntity customer, List<WorkerEntity> workers, String room, String type) {
         this.date = date;
         this.customer = customer;
+        this.workers = workers;
         this.room = room;
         this.type = type;
-        this.state = state;
-        this.observations = observations;
-        this.diagnostic = diagnostic;
     }
-
-
 }
