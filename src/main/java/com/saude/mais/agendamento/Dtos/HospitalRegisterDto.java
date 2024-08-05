@@ -1,4 +1,17 @@
 package com.saude.mais.agendamento.Dtos;
 
-public record HospitalRegisterDto(HospitalEntityDto hospitalEntityDto, UserEntityDto userEntityDto) {
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
+
+
+public record HospitalRegisterDto(
+        @Valid
+        @NotNull(message = "Usuário não pode ser nulo")
+        UserDto userDto,
+
+        @Valid
+        @NotNull(message = "Hospital não pode ser nullo")
+        HospitalDto hospitalDto
+) implements Serializable {
 }
