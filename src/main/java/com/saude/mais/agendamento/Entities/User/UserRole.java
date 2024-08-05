@@ -1,7 +1,7 @@
 package com.saude.mais.agendamento.Entities.User;
 
 public enum UserRole {
-    ADMIN("admin"),
+    ADMIN("Admin"),
     WORKER("worker"),
     CUSTOMER("customer");
 
