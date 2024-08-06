@@ -6,6 +6,8 @@ import com.saude.mais.agendamento.Repositories.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AddressService {
 
@@ -19,5 +21,9 @@ public class AddressService {
 
     public void save(AddressEntity address) {
         addressRepository.save(address);
+    }
+
+    public void saveAll(List<AddressEntity> addresses) {
+        addressRepository.saveAll(addresses);
     }
 }
