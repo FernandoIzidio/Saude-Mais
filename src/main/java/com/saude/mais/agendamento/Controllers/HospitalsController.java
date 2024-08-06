@@ -65,7 +65,7 @@ public class HospitalsController {
         hospitalEntity.setAddress(address.toAddressEntity());
         UserEntity userEntity = userDto.toUserEntity();
 
-        hospitalService.save(hospitalEntity, userEntity);
+        hospitalService.save(hospitalEntity, userEntity, hospital.platform());
         return ResponseEntity.ok("Hospital registrado com sucesso");
     }
 
