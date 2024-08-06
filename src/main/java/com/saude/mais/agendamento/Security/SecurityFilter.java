@@ -34,15 +34,15 @@ public class SecurityFilter extends OncePerRequestFilter {
         String token = recoverToken(request);
         if (token != null) {
             System.out.println("Token found: " + token);
-            String email = tokenService.validateToken(token);
-            if (email != null) {
-                UserDetails user = userRepository.findByEmail(email);
+            String username = tokenService.validateToken(token);
+            if (username != null) {
+                UserDetails user = userRepository.findByUser(username);
                 if (user != null) {
                     var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-                    System.out.println("User authenticated: " + email);
+                    System.out.println("User authenticated: " + username);
                 } else {
-                    System.out.println("User not found for email: " + email);
+                    System.out.println("User not found for user: " + username);
                 }
             } else {
                 System.out.println("Token is invalid or expired");
